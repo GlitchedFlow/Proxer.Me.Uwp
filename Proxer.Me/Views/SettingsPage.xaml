@@ -1,0 +1,1639 @@
+﻿<Page x:Class="Proxer.Me.Views.SettingsPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:cp="using:ColorPicker"
+	  xmlns:toolkit="using:WinRTXamlToolkit.Controls"
+	  xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+	  mc:Ignorable="d">
+	<Page.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Resources/Themes/Theme.xaml" />
+				<ResourceDictionary Source="../Resources/Themes/ControlStyles.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Page.Resources>
+
+	<Grid Background="{ThemeResource PageBackground}">
+		<SplitView x:Name="SplitView"
+				   DisplayMode="CompactOverlay"
+				   IsPaneOpen="False">
+
+			<SplitView.Pane>
+
+				<Grid Background="{StaticResource Background}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<RelativePanel>
+						<ToggleButton x:Name="CommandMenuButton"
+									  Width="48"
+									  Height="48"
+									  Background="{StaticResource Background}"
+									  Content="&#xE700;"
+									  FontFamily="Segoe MDL2 Assets"
+									  Foreground="{StaticResource Foreground}"
+									  IsChecked="{Binding IsPaneOpen,
+						                                  ElementName=SplitView,
+						                                  Mode=TwoWay}"
+									  Style="{StaticResource ProxerToggleButton}" />
+						<Rectangle x:Name="PaneSeparator_1"
+								   Height="1"
+								   Fill="{StaticResource Separator}"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   RelativePanel.Below="CommandMenuButton" />
+					</RelativePanel>
+
+					<ScrollViewer Grid.Row="1">
+						<RelativePanel>
+
+							<Button x:Name="HomeButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding Home}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.AlignTopWithPanel="True"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel HorizontalAlignment="Stretch">
+									<TextBlock x:Name="homeLogo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE10F;" />
+									<TextBlock Margin="10 0"
+											   VerticalAlignment="Center"
+											   FontSize="18"
+											   RelativePanel.RightOf="homeLogo"
+											   Text="Home" />
+								</RelativePanel>
+							</Button>
+
+							<Button x:Name="NewsButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding News}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="HomeButton"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<TextBlock x:Name="newsLogo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE25C;" />
+									<TextBlock Margin="10 0"
+											   VerticalAlignment="Center"
+											   FontSize="18"
+											   RelativePanel.RightOf="newsLogo"
+											   Text="News" />
+								</RelativePanel>
+							</Button>
+
+							<Rectangle x:Name="PaneSeparator0"
+									   Height="1"
+									   Fill="{StaticResource Separator}"
+									   RelativePanel.AlignLeftWithPanel="True"
+									   RelativePanel.AlignRightWithPanel="True"
+									   RelativePanel.Below="NewsButton" />
+
+							<Button x:Name="AnimeButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding AnimeOverview}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="PaneSeparator0"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel>
+									<TextBlock x:Name="buttonLogo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE786;" />
+									<TextBlock Margin="10 0"
+											   VerticalAlignment="Center"
+											   FontSize="18"
+											   RelativePanel.RightOf="buttonLogo"
+											   Text="Anime" />
+								</RelativePanel>
+							</Button>
+
+							<Button x:Name="MangaButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding MangaOverview}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="AnimeButton"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<TextBlock x:Name="button2Logo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE82D;" />
+									<TextBlock Margin="10 0"
+											   VerticalAlignment="Center"
+											   FontSize="18"
+											   RelativePanel.RightOf="button2Logo"
+											   Text="Manga" />
+								</RelativePanel>
+							</Button>
+
+							<Button x:Name="ExSearchButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding Search}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="MangaButton"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<TextBlock x:Name="searchLogo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE1A3;" />
+									<TextBlock Margin="10 0"
+											   VerticalAlignment="Center"
+											   FontSize="18"
+											   RelativePanel.RightOf="searchLogo"
+											   Text="Suche" />
+								</RelativePanel>
+							</Button>
+
+							<Rectangle x:Name="PaneSeparator1"
+									   Height="1"
+									   Fill="{StaticResource Separator}"
+									   RelativePanel.AlignLeftWithPanel="True"
+									   RelativePanel.AlignRightWithPanel="True"
+									   RelativePanel.Below="ExSearchButton" />
+
+							<Button x:Name="UCPButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding UserControlPanel}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="PaneSeparator1"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<Grid x:Name="ucpLogo"
+										  Width="45"
+										  Height="45"
+										  RelativePanel.AlignLeftWithPanel="True"
+										  RelativePanel.AlignVerticalCenterWithPanel="True">
+										<Image Source="{Binding Model.Avatar}" />
+									</Grid>
+									<TextBlock Margin="12 0"
+											   FontSize="18"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   RelativePanel.RightOf="ucpLogo"
+											   Text="{Binding Model.Username}" />
+								</RelativePanel>
+							</Button>
+
+							<Button x:Name="MessagesButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding Messenger}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="UCPButton"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<Grid x:Name="messagesLogo"
+										  Width="45"
+										  Height="45"
+										  RelativePanel.AlignLeftWithPanel="True"
+										  RelativePanel.AlignVerticalCenterWithPanel="True">
+										<TextBlock HorizontalAlignment="Center"
+												   VerticalAlignment="Center"
+												   FontFamily="Segoe MDL2 Assets"
+												   FontSize="24"
+												   Text="&#xE119;" />
+									</Grid>
+									<TextBlock Margin="12 0"
+											   FontSize="18"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   RelativePanel.RightOf="messagesLogo"
+											   Text="Messenger" />
+								</RelativePanel>
+							</Button>
+
+							<Button x:Name="NotificationsButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="MessagesButton"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<Grid x:Name="notificationsLogo"
+										  Width="45"
+										  Height="45"
+										  RelativePanel.AlignLeftWithPanel="True"
+										  RelativePanel.AlignVerticalCenterWithPanel="True">
+										<TextBlock HorizontalAlignment="Center"
+												   VerticalAlignment="Center"
+												   FontFamily="Segoe MDL2 Assets"
+												   FontSize="24"
+												   Text="&#xEC42;" />
+									</Grid>
+									<TextBlock Margin="12 0"
+											   FontSize="18"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   RelativePanel.RightOf="notificationsLogo"
+											   Text="Notifications" />
+								</RelativePanel>
+							</Button>
+
+							<Rectangle x:Name="PaneSeparator2"
+									   Height="1"
+									   Fill="{StaticResource Separator}"
+									   RelativePanel.AlignLeftWithPanel="True"
+									   RelativePanel.AlignRightWithPanel="True"
+									   RelativePanel.Below="NotificationsButton" />
+
+							<Button x:Name="StatisticsButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding Statistics}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="PaneSeparator2"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<Grid x:Name="statisticsLogo"
+										  Width="45"
+										  Height="45"
+										  RelativePanel.AlignLeftWithPanel="True"
+										  RelativePanel.AlignVerticalCenterWithPanel="True">
+										<TextBlock HorizontalAlignment="Center"
+												   VerticalAlignment="Center"
+												   FontFamily="Segoe MDL2 Assets"
+												   FontSize="24"
+												   Text="&#xE877;" />
+									</Grid>
+									<TextBlock Margin="12 0"
+											   FontSize="18"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   RelativePanel.RightOf="statisticsLogo"
+											   Text="Stats" />
+								</RelativePanel>
+							</Button>
+
+							<Rectangle x:Name="PaneSeparator3"
+									   Height="1"
+									   Fill="{StaticResource Separator}"
+									   RelativePanel.AlignLeftWithPanel="True"
+									   RelativePanel.AlignRightWithPanel="True"
+									   RelativePanel.Below="StatisticsButton" />
+
+							<Button x:Name="SettingsButton"
+									Height="50"
+									HorizontalAlignment="Stretch"
+									HorizontalContentAlignment="Left"
+									Background="Transparent"
+									Command="{Binding Settings}"
+									Foreground="{StaticResource Foreground}"
+									Padding="0"
+									RelativePanel.AlignLeftWithPanel="True"
+									RelativePanel.AlignRightWithPanel="True"
+									RelativePanel.Below="PaneSeparator3"
+									Style="{StaticResource ProxerButton}">
+								<RelativePanel Width="300">
+									<TextBlock x:Name="settingsLogo"
+											   Margin="12 0"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignVerticalCenterWithPanel="True"
+											   Text="&#xE115;" />
+									<TextBlock Margin="10 0"
+											   FontSize="18"
+											   RelativePanel.RightOf="settingsLogo"
+											   Text="Settings" />
+								</RelativePanel>
+							</Button>
+						</RelativePanel>
+					</ScrollViewer>
+				</Grid>
+			</SplitView.Pane>
+
+			<SplitView.Content>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<CommandBar x:Name="commandbar"
+								Grid.Row="0"
+								VerticalAlignment="Bottom"
+								Background="{StaticResource Background}"
+								BorderBrush="{StaticResource BorderBrush}"
+								Foreground="{StaticResource Foreground}">
+						<AppBarButton Width="250"
+									  Padding="0">
+							<AppBarButton.Template>
+								<ControlTemplate>
+									<TextBox x:Name="QuickSearch"
+											 Width="250"
+											 Height="32"
+											 Margin="0,8,0,0"
+											 Background="{StaticResource Background}"
+											 BorderBrush="{StaticResource BorderBrush}"
+											 Foreground="{StaticResource Foreground}"
+											 KeyDown="QuickSearch_KeyDown"
+											 KeyUp="QuickSearch_KeyUp"
+											 Style="{StaticResource ProxerTextbox}" />
+								</ControlTemplate>
+							</AppBarButton.Template>
+						</AppBarButton>
+						<AppBarButton Background="{StaticResource Background}"
+									  BorderBrush="{StaticResource BorderBrush}"
+									  Foreground="{StaticResource Foreground}"
+									  Icon="Find"
+									  Label="Search"
+									  Style="{StaticResource ProxerAppBarButton}" />
+						<AppBarButton Background="{StaticResource Background}"
+									  BorderBrush="{StaticResource BorderBrush}"
+									  Foreground="{StaticResource Foreground}"
+									  Icon="Contact"
+									  Label="Account"
+									  Style="{StaticResource ProxerAppBarButton}">
+							<AppBarButton.Flyout>
+								<Flyout Placement="Bottom">
+									<Flyout.FlyoutPresenterStyle>
+										<Style TargetType="FlyoutPresenter">
+											<Setter Property="Background"
+													Value="{StaticResource Background}" />
+											<Setter Property="BorderBrush"
+													Value="{StaticResource BorderBrush}" />
+										</Style>
+									</Flyout.FlyoutPresenterStyle>
+									<RelativePanel Background="{StaticResource Background}"
+												   BorderBrush="{StaticResource BorderBrush}">
+										<Button x:Name="ProfileImage"
+												Background="Transparent"
+												BorderBrush="Transparent"
+												Command="{Binding Profile}"
+												CommandParameter="{Binding Model.UID}"
+												Padding="0"
+												RelativePanel.AlignHorizontalCenterWithPanel="True"
+												Style="{StaticResource ProxerButton}">
+											<Image Width="110"
+												   Height="140"
+												   Source="{Binding Model.Avatar}"
+												   Stretch="Uniform" />
+										</Button>
+										<Button Margin="0 5 0 0"
+												Background="{StaticResource Background}"
+												BorderBrush="{StaticResource BorderBrush}"
+												Command="{Binding Logout}"
+												Content="Logout"
+												Foreground="{StaticResource Foreground}"
+												RelativePanel.AlignHorizontalCenterWithPanel="True"
+												RelativePanel.Below="ProfileImage"
+												Style="{StaticResource ProxerButton}" />
+									</RelativePanel>
+								</Flyout>
+							</AppBarButton.Flyout>
+						</AppBarButton>
+
+						<CommandBar.Content>
+							<RelativePanel>
+								<TextBlock x:Name="title"
+										   Margin="12,7"
+										   FontSize="24"
+										   FontWeight="Bold"
+										   RelativePanel.AlignLeftWithPanel="True"
+										   Text="{Binding Model.Data.Details.Name}"
+										   Foreground="{StaticResource Foreground}" />
+							</RelativePanel>
+						</CommandBar.Content>
+					</CommandBar>
+					<ScrollViewer Grid.Row="1"
+								  Margin="3">
+						<Border BorderBrush="{StaticResource BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="5 5 0 0">
+							<RelativePanel>
+								<Border BorderBrush="{StaticResource BorderBrush}"
+										BorderThickness="1"
+										Margin="20 10"
+										CornerRadius="5"
+										x:Name="content"
+										RelativePanel.AlignLeftWithPanel="True"
+										RelativePanel.AlignRightWithPanel="True">
+									<RelativePanel>
+										<Border x:Name="content_title"
+												BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="0 0 1 1"
+												CornerRadius="0 0 5 0">
+											<TextBlock Text="Content"
+													   Margin="5"
+													   FontSize="18"
+													   FontWeight="Bold"
+													   Foreground="{StaticResource Foreground}" />
+										</Border>
+										<ToggleSwitch IsOn="{Binding Model.Settings.ShowHeader, Mode=TwoWay}"
+													  Margin="5"
+													  OffContent="Header"
+													  OnContent="Header"
+													  RelativePanel.Below="content_title"
+													  x:Name="header"
+													  Style="{StaticResource ProxerToggleSwitch}" />
+										<ToggleSwitch IsOn="{Binding Model.Settings.ShowNewsImages, Mode=TwoWay}"
+													  Margin="5"
+													  x:Name="newsimages"
+													  OffContent="Newsbilder"
+													  OnContent="Newsbilder"
+													  RelativePanel.Below="content_title"
+													  RelativePanel.RightOf="header"
+													  Style="{StaticResource ProxerToggleSwitch}" />
+										<ToggleSwitch IsOn="{Binding Model.Settings.ShowLatestUpdates, Mode=TwoWay}"
+													  Margin="5"
+													  x:Name="lastestUpdates"
+													  OffContent="Letzten Updates einzeigen"
+													  OnContent="Letzten Updates einzeigen"
+													  RelativePanel.Below="content_title"
+													  RelativePanel.RightOf="newsimages"
+													  Style="{StaticResource ProxerToggleSwitch}" />
+										<ToggleSwitch IsOn="{Binding Model.Settings.UseLongReader, Mode=TwoWay}"
+													  Margin="5"
+													  x:Name="readerType"
+													  OffContent="Page Reader"
+													  OnContent="Endless Reader"
+													  RelativePanel.Below="content_title"
+													  RelativePanel.RightOf="lastestUpdates"
+													  Style="{StaticResource ProxerToggleSwitch}" />
+									</RelativePanel>
+								</Border>
+								<Border BorderBrush="{StaticResource BorderBrush}"
+										BorderThickness="1"
+										Margin="20 10"
+										CornerRadius="5"
+										x:Name="general"
+										RelativePanel.Below="content"
+										RelativePanel.AlignLeftWithPanel="True"
+										RelativePanel.AlignRightWithPanel="True">
+									<RelativePanel>
+										<Border x:Name="general_title"
+												BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="0 0 1 1"
+												CornerRadius="0 0 5 0">
+											<TextBlock Text="Allgemein"
+													   Margin="5"
+													   FontSize="18"
+													   FontWeight="Bold"
+													   Foreground="{StaticResource Foreground}" />
+										</Border>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="general_title"
+													Margin="5"
+													x:Name="homepage">
+											<TextBlock Text="Home:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<ComboBox Margin="5"
+													  ItemsSource="{Binding Model.HomePages}"
+													  SelectedItem="{Binding Model.Settings.Home, Mode=TwoWay}"
+													  Background="{StaticResource Background}"
+													  BorderBrush="{StaticResource BorderBrush}"
+													  Foreground="{StaticResource Foreground}"
+													  Style="{StaticResource ProxerComboBox}">
+												<ComboBox.ItemContainerStyle>
+													<Style TargetType="ComboBoxItem"
+														   BasedOn="{StaticResource ProxerComboBoxItem}">
+														<Setter Property="Background"
+																Value="{StaticResource Background}" />
+														<Setter Property="BorderBrush"
+																Value="{StaticResource BorderBrush}" />
+														<Setter Property="Foreground"
+																Value="{StaticResource Foreground}" />
+													</Style>
+												</ComboBox.ItemContainerStyle>
+											</ComboBox>
+										</StackPanel>
+									</RelativePanel>
+								</Border>
+								<Border BorderBrush="{StaticResource BorderBrush}"
+										BorderThickness="1"
+										Margin="20 10"
+										CornerRadius="5"
+										x:Name="listing"
+										RelativePanel.Below="general"
+										RelativePanel.AlignLeftWithPanel="True"
+										RelativePanel.AlignRightWithPanel="True">
+									<RelativePanel>
+										<Border x:Name="listing_title"
+												BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="0 0 1 1"
+												CornerRadius="0 0 5 0">
+											<TextBlock Text="Listen"
+													   Margin="5"
+													   FontSize="18"
+													   FontWeight="Bold"
+													   Foreground="{StaticResource Foreground}" />
+										</Border>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="listing_title"
+													Margin="5"
+													x:Name="listStyle">
+											<TextBlock Text="Style:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<ComboBox Margin="5"
+													  ItemsSource="{Binding Model.ListStyles}"
+													  SelectedItem="{Binding Model.Settings.ListStyle, Mode=TwoWay}"
+													  Background="{StaticResource Background}"
+													  BorderBrush="{StaticResource BorderBrush}"
+													  Foreground="{StaticResource Foreground}"
+													  Style="{StaticResource ProxerComboBox}">
+												<ComboBox.ItemContainerStyle>
+													<Style TargetType="ComboBoxItem"
+														   BasedOn="{StaticResource ProxerComboBoxItem}">
+														<Setter Property="Background"
+																Value="{StaticResource Background}" />
+														<Setter Property="BorderBrush"
+																Value="{StaticResource BorderBrush}" />
+														<Setter Property="Foreground"
+																Value="{StaticResource Foreground}" />
+													</Style>
+												</ComboBox.ItemContainerStyle>
+											</ComboBox>
+										</StackPanel>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="listing_title"
+													RelativePanel.RightOf="listStyle"
+													Margin="5"
+													x:Name="listSort">
+											<TextBlock Text="Sortierung:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<ComboBox Margin="5"
+													  ItemsSource="{Binding Model.ListSorts}"
+													  SelectedItem="{Binding Model.Settings.ListSort, Mode=TwoWay}"
+													  Background="{StaticResource Background}"
+													  BorderBrush="{StaticResource BorderBrush}"
+													  Foreground="{StaticResource Foreground}"
+													  Style="{StaticResource ProxerComboBox}">
+												<ComboBox.ItemContainerStyle>
+													<Style TargetType="ComboBoxItem"
+														   BasedOn="{StaticResource ProxerComboBoxItem}">
+														<Setter Property="Background"
+																Value="{StaticResource Background}" />
+														<Setter Property="BorderBrush"
+																Value="{StaticResource BorderBrush}" />
+														<Setter Property="Foreground"
+																Value="{StaticResource Foreground}" />
+													</Style>
+												</ComboBox.ItemContainerStyle>
+											</ComboBox>
+										</StackPanel>
+									</RelativePanel>
+								</Border>
+								<Border BorderBrush="{StaticResource BorderBrush}"
+										BorderThickness="1"
+										Margin="20 10"
+										CornerRadius="5"
+										x:Name="rating"
+										RelativePanel.Below="listing"
+										RelativePanel.AlignLeftWithPanel="True"
+										RelativePanel.AlignRightWithPanel="True">
+									<RelativePanel>
+										<Border x:Name="rating_title"
+												BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="0 0 1 1"
+												CornerRadius="0 0 5 0">
+											<TextBlock Text="Rating"
+													   Margin="5"
+													   FontSize="18"
+													   FontWeight="Bold"
+													   Foreground="{StaticResource Foreground}" />
+										</Border>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="rating_title"
+													Margin="5"
+													x:Name="ratingStyle">
+											<TextBlock Text="Style:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<ComboBox Margin="5"
+													  ItemsSource="{Binding Model.RatingStyles}"
+													  SelectedItem="{Binding Model.Settings.RatingStyle, Mode=TwoWay}"
+													  Background="{StaticResource Background}"
+													  BorderBrush="{StaticResource BorderBrush}"
+													  Foreground="{StaticResource Foreground}"
+													  Style="{StaticResource ProxerComboBox}">
+												<ComboBox.ItemContainerStyle>
+													<Style TargetType="ComboBoxItem"
+														   BasedOn="{StaticResource ProxerComboBoxItem}">
+														<Setter Property="Background"
+																Value="{StaticResource Background}" />
+														<Setter Property="BorderBrush"
+																Value="{StaticResource BorderBrush}" />
+														<Setter Property="Foreground"
+																Value="{StaticResource Foreground}" />
+													</Style>
+												</ComboBox.ItemContainerStyle>
+											</ComboBox>
+										</StackPanel>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="rating_title"
+													RelativePanel.RightOf="ratingStyle"
+													Margin="5"
+													x:Name="ratingRecommendation">
+											<TextBlock Text="Empfehlen ab:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<toolkit:NumericUpDown Margin="5"
+																   Maximum="10.0"
+																   Minimum="0.0"
+																   Background="{StaticResource Background}"
+																   BorderBrush="{StaticResource BorderBrush}"
+																   Foreground="Black"
+																   Style="{StaticResource ProxerNumericUpDown}"
+																   Value="{Binding Model.Settings.RecommendationValue,Mode=TwoWay}" />
+										</StackPanel>
+										<Border BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="1"
+												Margin="5"
+												CornerRadius="5"
+												x:Name="lowHeat"
+												RelativePanel.Below="rating_title"
+												RelativePanel.RightOf="ratingRecommendation"
+												Width="250">
+											<RelativePanel>
+												<Border x:Name="lowHeat_title"
+														BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="0 0 1 1"
+														CornerRadius="0 0 5 0">
+													<TextBlock Text="Low Heat Progress"
+															   Margin="5"
+															   FontSize="18"
+															   FontWeight="Bold"
+															   Foreground="{StaticResource Foreground}" />
+												</Border>
+												<ToggleButton Background="{Binding Model.Settings.LowHeatColor, Mode=TwoWay}"
+															  RelativePanel.Below="lowHeat_title"
+															  RelativePanel.AlignRightWithPanel="True"
+															  RelativePanel.AlignLeftWithPanel="True"
+															  HorizontalAlignment="Stretch"
+															  x:Name="lowHeat_toggle"
+															  Margin="5"
+															  BorderThickness="1"
+															  BorderBrush="{StaticResource BorderBrush}"
+															  Height="30"
+															  Style="{StaticResource ProxerToggleButton}" />
+												<Popup IsOpen="{Binding IsChecked, ElementName=lowHeat_toggle, Mode=TwoWay}"
+													   IsLightDismissEnabled="True">
+													<cp:ColorPicker SelectedColor="{Binding Model.Settings.LowHeatColor, Mode=TwoWay}"
+																	MinWidth="250" />
+												</Popup>
+											</RelativePanel>
+										</Border>
+										<Border BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="1"
+												Margin="5"
+												CornerRadius="5"
+												x:Name="middleHeat"
+												RelativePanel.Below="rating_title"
+												RelativePanel.RightOf="lowHeat"
+												Width="250">
+											<RelativePanel>
+												<Border x:Name="middleHeat_title"
+														BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="0 0 1 1"
+														CornerRadius="0 0 5 0">
+													<TextBlock Text="Middle Heat Progress"
+															   Margin="5"
+															   FontSize="18"
+															   FontWeight="Bold"
+															   Foreground="{StaticResource Foreground}" />
+												</Border>
+												<ToggleButton Background="{Binding Model.Settings.MiddleHeatColor, Mode=TwoWay}"
+															  RelativePanel.Below="middleHeat_title"
+															  RelativePanel.AlignRightWithPanel="True"
+															  RelativePanel.AlignLeftWithPanel="True"
+															  HorizontalAlignment="Stretch"
+															  x:Name="middleHeat_toggle"
+															  Margin="5"
+															  BorderThickness="1"
+															  BorderBrush="{StaticResource BorderBrush}"
+															  Height="30"
+															  Style="{StaticResource ProxerToggleButton}" />
+												<Popup IsOpen="{Binding IsChecked, ElementName=middleHeat_toggle, Mode=TwoWay}"
+													   IsLightDismissEnabled="True">
+													<cp:ColorPicker SelectedColor="{Binding Model.Settings.MiddleHeatColor, Mode=TwoWay}"
+																	MinWidth="250" />
+												</Popup>
+											</RelativePanel>
+										</Border>
+										<Border BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="1"
+												Margin="5"
+												CornerRadius="5"
+												x:Name="highHeat"
+												RelativePanel.Below="rating_title"
+												RelativePanel.RightOf="middleHeat"
+												Width="250">
+											<RelativePanel>
+												<Border x:Name="highHeat_title"
+														BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="0 0 1 1"
+														CornerRadius="0 0 5 0">
+													<TextBlock Text="High Heat Progress"
+															   Margin="5"
+															   FontSize="18"
+															   FontWeight="Bold"
+															   Foreground="{StaticResource Foreground}" />
+												</Border>
+												<ToggleButton Background="{Binding Model.Settings.HighHeatColor, Mode=TwoWay}"
+															  RelativePanel.Below="highHeat_title"
+															  RelativePanel.AlignRightWithPanel="True"
+															  RelativePanel.AlignLeftWithPanel="True"
+															  HorizontalAlignment="Stretch"
+															  x:Name="highHeat_toggle"
+															  Margin="5"
+															  BorderThickness="1"
+															  BorderBrush="{StaticResource BorderBrush}"
+															  Height="30"
+															  Style="{StaticResource ProxerToggleButton}" />
+												<Popup IsOpen="{Binding IsChecked, ElementName=highHeat_toggle, Mode=TwoWay}"
+													   IsLightDismissEnabled="True">
+													<cp:ColorPicker SelectedColor="{Binding Model.Settings.HighHeatColor, Mode=TwoWay}"
+																	MinWidth="250" />
+												</Popup>
+											</RelativePanel>
+										</Border>
+									</RelativePanel>
+								</Border>
+								<Border BorderBrush="{StaticResource BorderBrush}"
+										BorderThickness="1"
+										Margin="20 10"
+										CornerRadius="5"
+										x:Name="design"
+										RelativePanel.Below="rating"
+										RelativePanel.AlignLeftWithPanel="True"
+										RelativePanel.AlignRightWithPanel="True">
+									<RelativePanel>
+										<Border x:Name="design_title"
+												BorderBrush="{StaticResource BorderBrush}"
+												BorderThickness="0 0 1 1"
+												CornerRadius="0 0 5 0">
+											<TextBlock Text="Design"
+													   Margin="5"
+													   FontSize="18"
+													   FontWeight="Bold"
+													   Foreground="{StaticResource Foreground}" />
+										</Border>
+										<StackPanel Orientation="Horizontal"
+													RelativePanel.Below="design_title"
+													Margin="5"
+													x:Name="theme">
+											<TextBlock Text="Theme:"
+													   VerticalAlignment="Center"
+													   Margin="5"
+													   Foreground="{StaticResource Foreground}" />
+											<ComboBox Margin="5"
+													  ItemsSource="{Binding Model.Styles}"
+													  SelectedItem="{Binding Model.Settings.Style, Mode=TwoWay}"
+													  Foreground="{StaticResource Foreground}"
+													  Background="{StaticResource Background}"
+													  BorderBrush="{StaticResource BorderBrush}"
+													  Style="{StaticResource ProxerComboBox}">
+												<ComboBox.ItemContainerStyle>
+													<Style TargetType="ComboBoxItem"
+														   BasedOn="{StaticResource ProxerComboBoxItem}">
+														<Setter Property="Background"
+																Value="{StaticResource Background}" />
+														<Setter Property="BorderBrush"
+																Value="{StaticResource BorderBrush}" />
+														<Setter Property="Foreground"
+																Value="{StaticResource Foreground}" />
+													</Style>
+												</ComboBox.ItemContainerStyle>
+											</ComboBox>
+										</StackPanel>
+										<Rectangle Height="1"
+												   Fill="{StaticResource BorderBrush}"
+												   RelativePanel.Below="theme"
+												   RelativePanel.AlignLeftWithPanel="True"
+												   RelativePanel.AlignRightWithPanel="True"
+												   Margin="0 5"
+												   x:Name="designSeparator" />
+										<GridView RelativePanel.Below="designSeparator"
+												  RelativePanel.AlignLeftWithPanel="True"
+												  RelativePanel.AlignRightWithPanel="True"
+												  RelativePanel.AlignBottomWithPanel="True"
+												  IsItemClickEnabled="False"
+												  SelectionMode="None"
+												  HorizontalContentAlignment="Center"
+												  HorizontalAlignment="Center">
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="background"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="background_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.Background, Mode=TwoWay}"
+																	  RelativePanel.Below="background_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="background_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=background_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.Background, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="foreground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="foreground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.Foreground, Mode=TwoWay}"
+																	  RelativePanel.Below="foreground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="foreground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=foreground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.Foreground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="borderBrush"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="borderBrush_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="BorderBrush"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.BorderBrush, Mode=TwoWay}"
+																	  RelativePanel.Below="borderBrush_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="borderBrush_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=borderBrush_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.BorderBrush, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="separator"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="separator_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Separator"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.Separator, Mode=TwoWay}"
+																	  RelativePanel.Below="separator_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="separator_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=separator_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.Separator, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="activeBackground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="activeBackground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Active Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ActiveBackground, Mode=TwoWay}"
+																	  RelativePanel.Below="activeBackground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="activeBackground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=activeBackground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ActiveBackground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="activeForeground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="activeForeground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Active Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ActiveForeground, Mode=TwoWay}"
+																	  RelativePanel.Below="activeForeground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="activeForeground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=activeForeground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ActiveForeground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="activeBorderBrush"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="activeBorderBrush_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Active BorderBrush"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ActiveBorderBrush, Mode=TwoWay}"
+																	  RelativePanel.Below="activeBorderBrush_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="activeBorderBrush_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=activeBorderBrush_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ActiveBorderBrush, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="hoverBackground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="hoverBackground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Hover Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.HoverBackground, Mode=TwoWay}"
+																	  RelativePanel.Below="hoverBackground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="hoverBackground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=hoverBackground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.HoverBackground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="hoverForeground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="hoverForeground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Hover Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.HoverForeground, Mode=TwoWay}"
+																	  RelativePanel.Below="hoverForeground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="hoverForeground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=hoverForeground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.HoverForeground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="hoverBorderBrush"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="hoverBorderBrush_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Hover BorderBrush"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.HoverBorderBrush, Mode=TwoWay}"
+																	  RelativePanel.Below="hoverBorderBrush_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="hoverBorderBrush_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=hoverBorderBrush_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.HoverBorderBrush, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="clickedBackground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="clickedBackground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Clicked Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ClickedBackground, Mode=TwoWay}"
+																	  RelativePanel.Below="clickedBackground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="clickedBackground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=clickedBackground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ClickedBackground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="clickedForeground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="clickedForeground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Clicked Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ClickedForeground, Mode=TwoWay}"
+																	  RelativePanel.Below="clickedForeground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="clickedForeground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=clickedForeground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ClickedForeground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="clickedBorderBrush"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="clickedBorderBrush_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Clicked BorderBrush"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.ClickedBorderBrush, Mode=TwoWay}"
+																	  RelativePanel.Below="clickedBorderBrush_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="clickedBorderBrush_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=clickedBorderBrush_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.ClickedBorderBrush, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="pageBackground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="pageBackground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Page Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.PageBackground, Mode=TwoWay}"
+																	  RelativePanel.Below="pageBackground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="pageBackground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=pageBackground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.PageBackground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="pageForeground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="pageForeground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Page Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.PageForeground, Mode=TwoWay}"
+																	  RelativePanel.Below="pageForeground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="pageForeground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=pageForeground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.PageForeground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="disabledForeground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="disabledForeground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Disabled Foreground"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.DisabledForeground, Mode=TwoWay}"
+																	  RelativePanel.Below="disabledForeground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="disabledForeground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=disabledForeground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.DisabledForeground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="disabledBackground"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="disabledBackground_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Disabled Background"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.DisabledBackground, Mode=TwoWay}"
+																	  RelativePanel.Below="disabledBackground_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="disabledBackground_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=disabledBackground_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.DisabledBackground, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+											<GridViewItem>
+												<Border BorderBrush="{StaticResource BorderBrush}"
+														BorderThickness="1"
+														Margin="5"
+														CornerRadius="5"
+														x:Name="disabledBorderBrush"
+														RelativePanel.Below="rating"
+														RelativePanel.AlignLeftWithPanel="True"
+														RelativePanel.AlignRightWithPanel="True"
+														Width="250">
+													<RelativePanel>
+														<Border x:Name="disabledBorderBrush_title"
+																BorderBrush="{StaticResource BorderBrush}"
+																BorderThickness="0 0 1 1"
+																CornerRadius="0 0 5 0">
+															<TextBlock Text="Disabled BorderBrush"
+																	   Margin="5"
+																	   FontSize="18"
+																	   FontWeight="Bold"
+																	   Foreground="{StaticResource Foreground}" />
+														</Border>
+														<ToggleButton Background="{Binding Model.Settings.StylePalette.DisabledBorderBrush, Mode=TwoWay}"
+																	  RelativePanel.Below="disabledBorderBrush_title"
+																	  RelativePanel.AlignRightWithPanel="True"
+																	  RelativePanel.AlignLeftWithPanel="True"
+																	  HorizontalAlignment="Stretch"
+																	  x:Name="disabledBorderBrush_toggle"
+																	  Margin="5"
+																	  BorderThickness="1"
+																	  BorderBrush="{StaticResource BorderBrush}"
+																	  Height="30"
+																	  Style="{StaticResource ProxerToggleButton}" />
+														<Popup IsOpen="{Binding IsChecked, ElementName=disabledBorderBrush_toggle, Mode=TwoWay}"
+															   IsLightDismissEnabled="True">
+															<cp:ColorPicker SelectedColor="{Binding Model.Settings.StylePalette.DisabledBorderBrush, Mode=TwoWay}"
+																			MinWidth="250" />
+														</Popup>
+													</RelativePanel>
+												</Border>
+											</GridViewItem>
+										</GridView>
+									</RelativePanel>
+								</Border>
+							</RelativePanel>
+						</Border>
+					</ScrollViewer>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
+		<FlyoutPresenter x:Name="progressRing"
+						 Margin="15"
+						 HorizontalAlignment="Center"
+						 VerticalAlignment="Center"
+						 attached:FadeHelper.Visibility="{Binding Model.IsWorking}"
+						 attached:FadeHelper.VisibleOpacity="1.0"
+						 Background="{StaticResource Background}"
+						 BorderBrush="{StaticResource BorderBrush}"
+						 Padding="5">
+			<ProgressRing Width="100"
+						  Height="100"
+						  Margin="5"
+						  Foreground="{StaticResource Foreground}"
+						  IsActive="{Binding Model.IsWorking}" />
+		</FlyoutPresenter>
+	</Grid>
+</Page>
