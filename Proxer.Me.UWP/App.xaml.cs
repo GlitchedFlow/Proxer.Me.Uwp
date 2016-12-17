@@ -23,7 +23,7 @@ namespace Proxer.Me.UWP
 		/// </summary>
 		public App()
 		{
-			Microsoft.HockeyApp.HockeyClient.Current.Configure("4443e8080d1a456b8fb32dbf3c862595");
+			//Microsoft.HockeyApp.HockeyClient.Current.Configure("");
 			InitializeComponent();
 			SplashFactory = (e) => new Splash(e);
 			UnhandledException += App_UnhandledException;
