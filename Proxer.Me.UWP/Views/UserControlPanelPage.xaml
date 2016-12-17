@@ -1,0 +1,323 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.UserControlPanelPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:converter="using:Proxer.Me.Controls.Converters"
+	  xmlns:proxControls="using:Proxer.Me.Controls"
+	  xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+	  xmlns:i="using:Microsoft.Xaml.Interactivity"
+	  xmlns:b="using:Microsoft.Xaml.Interactions.Core"
+	  DataContext="{StaticResource UserControlPanelViewModel}">
+
+	<Grid x:Name="root"
+		  Background="{StaticResource ContentBackground}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1200" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.Height"
+								Value="250" />
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="ReminderStatesGroup">
+				<VisualState x:Name="Mobile">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="mangaReminder.(RelativePanel.RightOf)"
+								Value="{x:Null}" />
+						<Setter Target="mangaReminder.(RelativePanel.Below)"
+								Value="animeReminder" />
+						<Setter Target="mangaReminder.MinWidth"
+								Value="0" />
+						<Setter Target="animeReminder.MinWidth"
+								Value="0" />
+						<Setter Target="animeReminder.(RelativePanel.AlignLeftWithPanel)"
+								Value="True" />
+						<Setter Target="animeReminder.(RelativePanel.AlignRightWithPanel)"
+								Value="True" />
+						<Setter Target="mangaReminder.(RelativePanel.AlignLeftWithPanel)"
+								Value="True" />
+						<Setter Target="mangaReminder.(RelativePanel.AlignRightWithPanel)"
+								Value="True" />
+						<Setter Target="reminderPanel.HorizontalAlignment"
+								Value="Stretch" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Default">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1500" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="mangaReminder.(RelativePanel.RightOf)"
+								Value="animeReminder" />
+						<Setter Target="mangaReminder.(RelativePanel.Below)"
+								Value="{x:Null}" />
+						<Setter Target="mangaReminder.MinWidth"
+								Value="595" />
+						<Setter Target="animeReminder.MinWidth"
+								Value="595" />
+						<Setter Target="animeReminder.(RelativePanel.AlignLeftWithPanel)"
+								Value="False" />
+						<Setter Target="animeReminder.(RelativePanel.AlignRightWithPanel)"
+								Value="False" />
+						<Setter Target="mangaReminder.(RelativePanel.AlignLeftWithPanel)"
+								Value="False" />
+						<Setter Target="mangaReminder.(RelativePanel.AlignRightWithPanel)"
+								Value="False" />
+						<Setter Target="reminderPanel.HorizontalAlignment"
+								Value="Center" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<template:PageHeader Text="User-Control-Panel"
+							 x:Name="header">
+		</template:PageHeader>
+
+		<Border BorderThickness="0 0 0 1"
+				Grid.Row="1"
+				BorderBrush="{StaticResource ActiveBorderBrush}"
+				Visibility="{Binding Model.ShowHeader, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+			<Image Source="{Binding Model.Header, Converter={StaticResource RandomHeaderToStringConverter}}"
+				   HorizontalAlignment="Center"
+				   x:Name="proxerHeader" />
+		</Border>
+
+		<Pivot Grid.Row="2"
+			   SelectedIndex="{Binding Model.SelectedContent, Mode=TwoWay}">
+			<PivotItem Header="Summary">
+				<TextBlock Text="Noch nicht implementiert"
+						   FontSize="32"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center" />
+			</PivotItem>
+			<PivotItem Header="Anime">
+				<PivotItem.Resources>
+					<converter:StateStringConverter x:Key="StateStringConverter"
+													IsAnime="True" />
+					<CollectionViewSource x:Key="animeCollection"
+										  IsSourceGrouped="True"
+										  Source="{Binding Model.AnimeCollection, Converter={StaticResource UserListToGroupedListConverter}}" />
+				</PivotItem.Resources>
+				<ListView ItemsSource="{Binding Source={StaticResource animeCollection}}"
+						  SelectedItem="{Binding Model.SelectedAnime, Mode=TwoWay}"
+						  IsItemClickEnabled="True"
+						  x:Name="animeList"
+						  ItemTemplate="{StaticResource UserListItem}">
+					<i:Interaction.Behaviors>
+						<b:EventTriggerBehavior EventName="ItemClick">
+							<b:InvokeCommandAction Command="{Binding OpenEntry}" />
+						</b:EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+					<ListView.GroupStyle>
+						<GroupStyle>
+							<GroupStyle.HeaderTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Key, Converter={StaticResource StateStringConverter}}"
+											   Margin="4"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center" />
+								</DataTemplate>
+							</GroupStyle.HeaderTemplate>
+						</GroupStyle>
+					</ListView.GroupStyle>
+					<ListView.Footer>
+						<Button Content="Weitere Laden"
+								Margin="3"
+								Visibility="{Binding Model.HasMoreAnime, Converter={StaticResource BoolToVisibilityConverter}}"
+								Command="{Binding LoadAnimePage}"
+								HorizontalAlignment="Center" />
+					</ListView.Footer>
+				</ListView>
+			</PivotItem>
+			<PivotItem Header="Manga">
+				<PivotItem.Resources>
+					<converter:StateStringConverter x:Key="StateStringConverter"
+													IsAnime="False" />
+					<CollectionViewSource x:Key="mangaCollection"
+										  IsSourceGrouped="True"
+										  Source="{Binding Model.MangaCollection, Converter={StaticResource UserListToGroupedListConverter}}" />
+				</PivotItem.Resources>
+				<ListView ItemsSource="{Binding Source={StaticResource mangaCollection}}"
+						  SelectedItem="{Binding Model.SelectedManga, Mode=TwoWay}"
+						  IsItemClickEnabled="True"
+						  x:Name="mangaList"
+						  ItemTemplate="{StaticResource UserListItem}">
+					<i:Interaction.Behaviors>
+						<b:EventTriggerBehavior EventName="ItemClick">
+							<b:InvokeCommandAction Command="{Binding OpenEntry}" />
+						</b:EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+					<ListView.GroupStyle>
+						<GroupStyle>
+							<GroupStyle.HeaderTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Key, Converter={StaticResource StateStringConverter}}"
+											   Margin="4"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center" />
+								</DataTemplate>
+							</GroupStyle.HeaderTemplate>
+						</GroupStyle>
+					</ListView.GroupStyle>
+					<ListView.Footer>
+						<Button Content="Weitere Laden"
+								Margin="3"
+								Visibility="{Binding Model.HasMoreManga, Converter={StaticResource BoolToVisibilityConverter}}"
+								Command="{Binding LoadMangaPage}"
+								HorizontalAlignment="Center" />
+					</ListView.Footer>
+				</ListView>
+			</PivotItem>
+			<PivotItem Header="Lesezeichen">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<RelativePanel HorizontalAlignment="Center"
+								   x:Name="reminderPanel">
+						<proxControls:Expander Header="Anime"
+											   Margin="3"
+											   x:Name="animeReminder"
+											   IsExpanded="True"
+											   MinWidth="595"
+											   HeaderBorderBrush="Transparent">
+							<ListView ItemsSource="{Binding Model.ReminderCollection, Converter={StaticResource ReminderFilteredConverter},
+							ConverterParameter=anime}"
+									  ScrollViewer.VerticalScrollBarVisibility="Auto"
+									  ItemTemplate="{StaticResource ReminderItem}"
+									  SelectedItem="{Binding Model.SelectedAnimeReminder, Mode=TwoWay}"
+									  IsItemClickEnabled="True">
+								<i:Interaction.Behaviors>
+									<b:EventTriggerBehavior EventName="ItemClick">
+										<b:InvokeCommandAction Command="{Binding OpenWebPlayerPage}" />
+									</b:EventTriggerBehavior>
+								</i:Interaction.Behaviors>
+							</ListView>
+						</proxControls:Expander>
+						<proxControls:Expander Header="Manga"
+											   Margin="3"
+											   x:Name="mangaReminder"
+											   IsExpanded="True"
+											   MinWidth="595"
+											   RelativePanel.RightOf="animeReminder"
+											   HeaderBorderBrush="Transparent">
+							<ListView ItemsSource="{Binding Model.ReminderCollection, Converter={StaticResource ReminderFilteredConverter}, ConverterParameter=manga}"
+									  ScrollViewer.VerticalScrollBarVisibility="Auto"
+									  SelectedItem="{Binding Model.SelectedMangaReminder, Mode=TwoWay}"
+									  ItemTemplate="{StaticResource ReminderItem}"
+									  IsItemClickEnabled="True">
+								<i:Interaction.Behaviors>
+									<b:EventTriggerBehavior EventName="ItemClick">
+										<b:InvokeCommandAction Command="{Binding OpenWebReaderPage}" />
+									</b:EventTriggerBehavior>
+								</i:Interaction.Behaviors>
+							</ListView>
+						</proxControls:Expander>
+					</RelativePanel>
+				</ScrollViewer>
+			</PivotItem>
+			<PivotItem Header="Top 10">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Margin="3">
+						<GridView ItemsSource="{Binding Model.TopTenCollection, Converter={StaticResource TopTenFilteredConverter}, ConverterParameter=anime}"
+								  HorizontalAlignment="Center"
+								  HorizontalContentAlignment="Center"
+								  Margin="3"
+								  IsItemClickEnabled="True"
+								  SelectedItem="{Binding Model.SelectedAnimeTopTen, Mode=TwoWay}"
+								  ItemTemplate="{StaticResource TopTenItem}">
+							<i:Interaction.Behaviors>
+								<b:EventTriggerBehavior EventName="ItemClick">
+									<b:InvokeCommandAction Command="{Binding OpenEntry}" />
+								</b:EventTriggerBehavior>
+							</i:Interaction.Behaviors>
+							<GridView.Header>
+								<TextBlock Text="Anime"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   Margin="3"
+										   FontSize="28" />
+							</GridView.Header>
+						</GridView>
+						<GridView ItemsSource="{Binding Model.TopTenCollection, Converter={StaticResource TopTenFilteredConverter}, ConverterParameter=manga}"
+								  HorizontalAlignment="Center"
+								  HorizontalContentAlignment="Center"
+								  Margin="3"
+								  IsItemClickEnabled="True"
+								  SelectedItem="{Binding Model.SelectedMangaTopTen, Mode=TwoWay}"
+								  ItemTemplate="{StaticResource TopTenItem}">
+							<i:Interaction.Behaviors>
+								<b:EventTriggerBehavior EventName="ItemClick">
+									<b:InvokeCommandAction Command="{Binding OpenEntry}" />
+								</b:EventTriggerBehavior>
+							</i:Interaction.Behaviors>
+							<GridView.Header>
+								<TextBlock Text="Manga"
+										   Margin="3"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   FontSize="28" />
+							</GridView.Header>
+						</GridView>
+					</StackPanel>
+				</ScrollViewer>
+			</PivotItem>
+			<PivotItem Header="Chronik">
+				<ListView ItemsSource="{Binding Model.HistoryCollection}"
+						  SelectedItem="{Binding Model.SelectedHistory, Mode=TwoWay}"
+						  ItemTemplate="{StaticResource HistoryItem}"
+						  IsItemClickEnabled="True">
+					<i:Interaction.Behaviors>
+						<b:EventTriggerBehavior EventName="ItemClick">
+							<b:InvokeCommandAction Command="{Binding OpenEntry}" />
+						</b:EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+					<ListView.Footer>
+						<Button Content="Weitere Laden"
+								Margin="3"
+								Visibility="{Binding Model.HasMoreHistory, Converter={StaticResource BoolToVisibilityConverter}}"
+								Command="{Binding LoadHistoryPage}"
+								HorizontalAlignment="Center" />
+					</ListView.Footer>
+				</ListView>
+			</PivotItem>
+			<PivotItem Header="Votes">
+				<ItemsControl ItemsSource="{Binding Model.VoteCollection}"
+							  ItemTemplate="{StaticResource VoteItem}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Vertical">
+							</StackPanel>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+				</ItemsControl>
+			</PivotItem>
+		</Pivot>
+	</Grid>
+</Page>

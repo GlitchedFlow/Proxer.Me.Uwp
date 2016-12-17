@@ -1,0 +1,83 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.NewsPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+	  xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	  xmlns:behavior="using:Template10.Behaviors"
+	  DataContext="{StaticResource NewsViewModel}">
+
+	<Grid x:Name="rootPanel"
+		  Background="{StaticResource ContentBackground}">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1200" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.Height"
+								Value="250" />
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<template:PageHeader Text="News"
+							 x:Name="header">
+		</template:PageHeader>
+
+		<Border BorderThickness="0 0 0 1"
+				BorderBrush="{StaticResource ActiveBorderBrush}"
+				Grid.Row="1"
+				Visibility="{Binding Model.ShowHeader, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+			<Image Source="{Binding Model.Header, Converter={StaticResource RandomHeaderToStringConverter}}"
+				   HorizontalAlignment="Center"
+				   x:Name="proxerHeader" />
+		</Border>
+
+		<ListView ItemsSource="{Binding Model.NewsCollection}"
+				  SelectedItem="{Binding Model.SelectedNews, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+				  ItemTemplate="{StaticResource NewsListItem}"
+				  x:Name="NewsList"
+				  RelativePanel.AlignLeftWithPanel="True"
+				  RelativePanel.AlignRightWithPanel="True"
+				  RelativePanel.Above="loadContent"
+				  Grid.Row="2">
+			<interactivity:Interaction.Behaviors>
+				<core:EventTriggerBehavior EventName="SelectionChanged">
+					<core:InvokeCommandAction Command="{Binding OpenNews}" />
+				</core:EventTriggerBehavior>
+			</interactivity:Interaction.Behaviors>
+			<ListView.Footer>
+				<Button Content="Weitere Laden"
+						Margin="3"
+						Visibility="{Binding Model.HasMoreItems, Converter={StaticResource BoolToVisibilityConverter}}"
+						Command="{Binding LoadNextPage}"
+						HorizontalAlignment="Center" />
+			</ListView.Footer>
+		</ListView>
+	</Grid>
+</Page>

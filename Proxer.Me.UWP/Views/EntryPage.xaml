@@ -1,0 +1,212 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.EntryPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:proxControls="using:Proxer.Me.Controls"
+	  xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+	  xmlns:userControls="using:Proxer.Me.UWP.UserControls"
+	  xmlns:converter="using:Proxer.Me.Controls.Converters"
+	  xmlns:i="using:Microsoft.Xaml.Interactivity"
+	  xmlns:b="using:Microsoft.Xaml.Interactions.Core"
+	  DataContext="{StaticResource EntryViewModel}">
+
+	<Grid Background="{StaticResource ContentBackground}"
+		  x:Name="root">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1200" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.Height"
+								Value="250" />
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<template:PageHeader x:Name="header"
+							 EllipsisVisibility="Collapsed"
+							 Text="{Binding Model.FullEntry.Name}">
+			<template:PageHeader.PrimaryCommands>
+				<AppBarButton Label="Parameter"
+							  x:Name="toggleParameter"
+							  Style="{StaticResource HamburgerButtonStyle}"
+							  Command="{Binding SwitchPaneState}"
+							  HorizontalContentAlignment="Center"
+							  VerticalContentAlignment="Center">
+					<AppBarButton.Content>
+						<FontIcon x:Name="ContentPresenter"
+								  FontSize="20"
+								  Glyph="&#xE700;" />
+					</AppBarButton.Content>
+				</AppBarButton>
+			</template:PageHeader.PrimaryCommands>
+		</template:PageHeader>
+
+		<SplitView Grid.Row="1"
+				   PanePlacement="Right"
+				   attached:SplitViewHelper.IsFullScreen="True"
+				   attached:SplitViewHelper.FullScreenMaxWidth="600"
+				   attached:SplitViewHelper.OpenPaneLength="350"
+				   IsPaneOpen="{Binding Model.IsPaneOpen, Mode=TwoWay}"
+				   DisplayMode="{Binding Model.PaneDisplayMode}"
+				   PaneBackground="{StaticResource Background}">
+			<SplitView.Pane>
+				<Border BorderBrush="{StaticResource ActiveBorderBrush}"
+						BorderThickness="1 0 0 0">
+					<userControls:FullEntryControl />
+				</Border>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<Border BorderThickness="0 0 0 1"
+							Grid.Row="0"
+							BorderBrush="{StaticResource ActiveBorderBrush}"
+							Visibility="{Binding Model.ShowHeader, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+						<Image Source="{Binding Model.Header, Converter={StaticResource RandomHeaderToStringConverter}}"
+							   HorizontalAlignment="Center"
+							   x:Name="proxerHeader" />
+					</Border>
+
+					<Pivot Grid.Row="1"
+						   SelectedIndex="{Binding Model.SelectedContent, Mode=TwoWay}">
+						<PivotItem Header="{Binding Model.ContentTab}">
+							<ScrollViewer VerticalScrollBarVisibility="Auto">
+								<ItemsControl ItemsSource="{Binding Model.ContentCollection}"
+											  ItemTemplate="{StaticResource ContentItem}">
+								</ItemsControl>
+							</ScrollViewer>
+						</PivotItem>
+						<PivotItem Header="Kommentare">
+							<ScrollViewer VerticalScrollBarVisibility="Auto">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="*" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<ItemsControl ItemsSource="{Binding Model.Comments}"
+												  ItemTemplate="{StaticResource EntryCommentItem}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel Orientation="Vertical">
+												</StackPanel>
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+									</ItemsControl>
+									<Button Content="Weitere Laden"
+											Margin="3"
+											Grid.Row="1"
+											Visibility="{Binding Model.HasMoreComments, Converter={StaticResource BoolToVisibilityConverter}}"
+											Command="{Binding LoadCommentPage}"
+											HorizontalAlignment="Center" />
+									<TextBlock Text="Keine Kommentare"
+											   Grid.RowSpan="2"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   FontSize="32"
+											   Visibility="{Binding Model.Comments.Count, Converter={StaticResource InvertedIntToVisibilityConverter}}" />
+								</Grid>
+							</ScrollViewer>
+						</PivotItem>
+						<PivotItem Header="Verbindungen">
+							<Grid>
+								<Grid.Resources>
+									<CollectionViewSource x:Key="relations"
+														  IsSourceGrouped="True"
+														  Source="{Binding Model.Relations, Converter={StaticResource RelationsToGroupedRelationsConverter}}" />
+								</Grid.Resources>
+								<ListView ItemsSource="{Binding Source={StaticResource relations}}"
+										  SelectedItem="{Binding Model.SelectedRelation, Mode=TwoWay}"
+										  HorizontalAlignment="Stretch"
+										  RelativePanel.AlignLeftWithPanel="True"
+										  RelativePanel.AlignRightWithPanel="True"
+										  VerticalContentAlignment="Center"
+										  IsItemClickEnabled="True"
+										  ItemTemplate="{StaticResource EntryListItem}"
+										  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+									<ListView.GroupStyle>
+										<GroupStyle HidesIfEmpty="True">
+											<GroupStyle.HeaderTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Key}"
+															   VerticalAlignment="Center"
+															   HorizontalAlignment="Center"
+															   Margin="4" />
+												</DataTemplate>
+											</GroupStyle.HeaderTemplate>
+										</GroupStyle>
+									</ListView.GroupStyle>
+									<i:Interaction.Behaviors>
+										<b:EventTriggerBehavior EventName="ItemClick">
+											<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+										</b:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</ListView>
+								<GridView ItemsSource="{Binding Source={StaticResource relations}}"
+										  HorizontalAlignment="Stretch"
+										  RelativePanel.AlignHorizontalCenterWithPanel="True"
+										  VerticalContentAlignment="Center"
+										  HorizontalContentAlignment="Center"
+										  IsItemClickEnabled="True"
+										  SelectedItem="{Binding Model.SelectedRelation, Mode=TwoWay}"
+										  ItemTemplate="{StaticResource EntryGridItem}"
+										  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+									<GridView.GroupStyle>
+										<GroupStyle>
+											<GroupStyle.HeaderTemplate>
+												<DataTemplate>
+													<TextBlock Text="{Binding Key}"
+															   VerticalAlignment="Center"
+															   HorizontalAlignment="Center"
+															   Margin="4" />
+												</DataTemplate>
+											</GroupStyle.HeaderTemplate>
+										</GroupStyle>
+									</GridView.GroupStyle>
+									<i:Interaction.Behaviors>
+										<b:EventTriggerBehavior EventName="ItemClick">
+											<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+										</b:EventTriggerBehavior>
+									</i:Interaction.Behaviors>
+								</GridView>
+								<TextBlock Text="Keine Verbindungen"
+										   Grid.RowSpan="2"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   FontSize="32"
+										   Visibility="{Binding Model.Relations.Count, Converter={StaticResource InvertedIntToVisibilityConverter}}" />
+							</Grid>
+						</PivotItem>
+					</Pivot>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
+	</Grid>
+</Page>

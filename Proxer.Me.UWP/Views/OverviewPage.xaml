@@ -1,0 +1,383 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.OverviewPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:proxControls="using:Proxer.Me.Controls"
+	  xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+	  xmlns:i="using:Microsoft.Xaml.Interactivity"
+	  xmlns:b="using:Microsoft.Xaml.Interactions.Core"
+	  DataContext="{StaticResource OverviewViewModel}">
+
+	<Grid Background="{StaticResource ContentBackground}"
+		  x:Name="root">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Normal">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1200" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="proxerHeader.Height"
+								Value="250" />
+						<Setter Target="proxerHeader.MaxHeight"
+								Value="250" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<template:PageHeader Text="{Binding Model.OverviewType}"
+							 RelativePanel.AlignLeftWithPanel="True"
+							 RelativePanel.AlignTopWithPanel="True"
+							 RelativePanel.AlignRightWithPanel="True"
+							 x:Name="header"
+							 EllipsisVisibility="Collapsed">
+			<template:PageHeader.PrimaryCommands>
+				<AppBarButton Label="Parameter"
+							  x:Name="toggleParameter"
+							  Style="{StaticResource HamburgerButtonStyle}"
+							  Command="{Binding SwitchPaneState}"
+							  HorizontalContentAlignment="Center"
+							  VerticalContentAlignment="Center">
+					<AppBarButton.Content>
+						<FontIcon x:Name="ContentPresenter"
+								  FontSize="20"
+								  Glyph="&#xE700;" />
+					</AppBarButton.Content>
+				</AppBarButton>
+			</template:PageHeader.PrimaryCommands>
+		</template:PageHeader>
+
+		<SplitView Grid.Row="1"
+				   PanePlacement="Right"
+				   OpenPaneLength="{Binding Width, ElementName=paneWidthProvider}"
+				   IsPaneOpen="{Binding Model.IsPaneOpen, Mode=TwoWay}"
+				   DisplayMode="{Binding Model.PaneDisplayMode}"
+				   PaneBackground="{StaticResource Background}">
+			<SplitView.Pane>
+				<Border BorderBrush="{StaticResource ActiveBorderBrush}"
+						BorderThickness="1 0 0 0"
+						x:Name="paneWidthProvider">
+					<StackPanel Orientation="Vertical"
+								Margin="3">
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Beginn mit:"
+									   Margin="2"
+									   VerticalAlignment="Center"
+									   x:Name="startWith" />
+							<ComboBox PlaceholderText="Bereich"
+									  Margin="2"
+									  ItemsSource="{Binding Model.LettersSource}"
+									  SelectedIndex="{Binding Model.SelectedLetter, Mode=TwoWay}"
+									  Width="150" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Sortierung:"
+									   Margin="2"
+									   VerticalAlignment="Center"
+									   x:Name="sortText"
+									   Width="{Binding ActualWidth, ElementName=startWith}" />
+							<ComboBox PlaceholderText="Sortierung"
+									  IsEnabled="False"
+									  SelectedIndex="{Binding Model.SelectedSorting, Mode=TwoWay}"
+									  Margin="2"
+									  Width="150">
+								<ComboBoxItem Content="Bewertung" />
+								<ComboBoxItem Content="Titel" />
+								<ComboBoxItem Content="Zugriffe" />
+							</ComboBox>
+						</StackPanel>
+					</StackPanel>
+				</Border>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<Border BorderThickness="0 0 0 1"
+							Grid.Row="0"
+							BorderBrush="{StaticResource ActiveBorderBrush}"
+							Visibility="{Binding Model.ShowHeader, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+						<Image Source="{Binding Model.Header, Converter={StaticResource RandomHeaderToStringConverter}}"
+							   HorizontalAlignment="Center"
+							   x:Name="proxerHeader" />
+					</Border>
+
+					<Pivot SelectedIndex="{Binding Model.SelectedContent, Mode=TwoWay}"
+						   Grid.Row="1"
+						   x:Name="pivotHost">
+						<PivotItem Header="{Binding Model.AnimeMangaTabName}">
+							<ScrollViewer>
+								<RelativePanel>
+									<Hub x:Name="latestUpdatesAnimeManga">
+									</Hub>
+									<Rectangle RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignRightWithPanel="True"
+											   Height="1"
+											   RelativePanel.Below="latestUpdatesAnimeManga"
+											   Fill="{StaticResource ActiveBorderBrush}"
+											   Margin="3"
+											   x:Name="animeMangaSeparator" />
+									<ListView RelativePanel.Below="animeMangaSeparator"
+											  ItemsSource="{Binding Model.AnimeMangaSource}"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignLeftWithPanel="True"
+											  RelativePanel.AlignRightWithPanel="True"
+											  IsItemClickEnabled="True"
+											  VerticalContentAlignment="Center"
+											  ItemTemplate="{StaticResource EntryListItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<ListView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreAnimeManga, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</ListView.Footer>
+									</ListView>
+									<GridView RelativePanel.Below="animeMangaSeparator"
+											  ItemsSource="{Binding Model.AnimeMangaSource}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignHorizontalCenterWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  HorizontalContentAlignment="Center"
+											  IsItemClickEnabled="True"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  ItemTemplate="{StaticResource EntryGridItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<GridView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreAnimeManga, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</GridView.Footer>
+									</GridView>
+								</RelativePanel>
+							</ScrollViewer>
+						</PivotItem>
+						<PivotItem Header="{Binding Model.MovieOneShotTabName}">
+							<ScrollViewer>
+								<RelativePanel>
+									<Hub x:Name="latestUpdatesMovieOneShot">
+									</Hub>
+									<Rectangle RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignRightWithPanel="True"
+											   Height="1"
+											   RelativePanel.Below="latestUpdatesMovieOneShot"
+											   Fill="{StaticResource ActiveBorderBrush}"
+											   Margin="3"
+											   x:Name="movieOneShotSeparator" />
+									<ListView RelativePanel.Below="movieOneShotSeparator"
+											  ItemsSource="{Binding Model.MovieOneShotSource}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignLeftWithPanel="True"
+											  IsItemClickEnabled="True"
+											  RelativePanel.AlignRightWithPanel="True"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  VerticalContentAlignment="Center"
+											  ItemTemplate="{StaticResource EntryListItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<ListView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreMovieOneShot, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</ListView.Footer>
+									</ListView>
+									<GridView RelativePanel.Below="movieOneShotSeparator"
+											  ItemsSource="{Binding Model.MovieOneShotSource}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignHorizontalCenterWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  IsItemClickEnabled="True"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  HorizontalContentAlignment="Center"
+											  ItemTemplate="{StaticResource EntryGridItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<GridView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreMovieOneShot, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</GridView.Footer>
+									</GridView>
+								</RelativePanel>
+							</ScrollViewer>
+						</PivotItem>
+						<PivotItem Header="{Binding Model.OvaDoujinshiTabName}"
+								   attached:PivotItemHelper.ShowPivotItem="{Binding Model.ShowOVADoujinshiContent}"
+								   attached:PivotItemHelper.TargetIndex="2">
+							<ScrollViewer>
+								<RelativePanel>
+									<Hub x:Name="latestUpdatesOvaDoujinshi">
+									</Hub>
+									<Rectangle RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignRightWithPanel="True"
+											   Height="1"
+											   RelativePanel.Below="latestUpdatesOvaDoujinshi"
+											   Fill="{StaticResource ActiveBorderBrush}"
+											   Margin="3"
+											   x:Name="ovaDoujinshiSeparator" />
+									<ListView RelativePanel.Below="ovaDoujinshiSeparator"
+											  ItemsSource="{Binding Model.OvaDoujinshiSource}"
+											  HorizontalAlignment="Stretch"
+											  IsItemClickEnabled="True"
+											  RelativePanel.AlignLeftWithPanel="True"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  RelativePanel.AlignRightWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  ItemTemplate="{StaticResource EntryListItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<ListView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreOVADoujinshi, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</ListView.Footer>
+									</ListView>
+									<GridView RelativePanel.Below="ovaDoujinshiSeparator"
+											  ItemsSource="{Binding Model.OvaDoujinshiSource}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignHorizontalCenterWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  HorizontalContentAlignment="Center"
+											  IsItemClickEnabled="True"
+											  ItemTemplate="{StaticResource EntryGridItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<GridView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreOVADoujinshi, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</GridView.Footer>
+									</GridView>
+								</RelativePanel>
+							</ScrollViewer>
+						</PivotItem>
+						<PivotItem Header="{Binding Model.HentaiTabName}"
+								   attached:PivotItemHelper.ShowPivotItem="{Binding Model.ShowAdultContent, Source={StaticResource ShellViewModel}}"
+								   attached:PivotItemHelper.TargetIndex="3">
+							<ScrollViewer>
+								<RelativePanel>
+									<Hub x:Name="latestUpdatesHentai">
+									</Hub>
+									<Rectangle RelativePanel.AlignLeftWithPanel="True"
+											   RelativePanel.AlignRightWithPanel="True"
+											   Height="1"
+											   RelativePanel.Below="latestUpdatesHentai"
+											   Fill="{StaticResource ActiveBorderBrush}"
+											   Margin="3"
+											   x:Name="hentaiSeparator" />
+									<ListView RelativePanel.Below="hentaiSeparator"
+											  ItemsSource="{Binding Model.HentaiSource}"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignLeftWithPanel="True"
+											  RelativePanel.AlignRightWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  IsItemClickEnabled="True"
+											  ItemTemplate="{StaticResource EntryListItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<ListView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreHentai, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</ListView.Footer>
+									</ListView>
+									<GridView RelativePanel.Below="hentaiSeparator"
+											  ItemsSource="{Binding Model.HentaiSource}"
+											  HorizontalAlignment="Stretch"
+											  RelativePanel.AlignHorizontalCenterWithPanel="True"
+											  VerticalContentAlignment="Center"
+											  SelectedItem="{Binding Model.SelectedEntry, Mode=TwoWay}"
+											  HorizontalContentAlignment="Center"
+											  IsItemClickEnabled="True"
+											  ItemTemplate="{StaticResource EntryGridItem}"
+											  Visibility="{Binding Model.ShowEntriesInList, Source={StaticResource SettingsViewModel}, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+										<i:Interaction.Behaviors>
+											<b:EventTriggerBehavior EventName="ItemClick">
+												<b:InvokeCommandAction Command="{Binding LoadEntry}" />
+											</b:EventTriggerBehavior>
+										</i:Interaction.Behaviors>
+										<GridView.Footer>
+											<Button Content="Weitere Laden"
+													Margin="3"
+													Visibility="{Binding Model.HasMoreHentai, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding LoadNextPage}"
+													HorizontalAlignment="Center" />
+										</GridView.Footer>
+									</GridView>
+								</RelativePanel>
+							</ScrollViewer>
+						</PivotItem>
+					</Pivot>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
+	</Grid>
+</Page>

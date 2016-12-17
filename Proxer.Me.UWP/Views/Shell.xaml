@@ -1,0 +1,204 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.Shell"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:controls="using:Template10.Controls"
+	  mc:Ignorable="d"
+	  DataContext="{StaticResource ShellViewModel}"
+	  x:Name="page">
+
+	<controls:HamburgerMenu x:Name="rootHambugermenu">
+		<controls:HamburgerMenu.PrimaryButtons>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:NewsPage"
+										  AutomationProperties.Name="Proxer">
+				<Grid>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Width="48"
+								  Height="48"
+								  Glyph="&#xE25C;" />
+						<TextBlock Margin="12,0,0,0"
+								   VerticalAlignment="Center"
+								   Text="News" />
+					</StackPanel>
+					<Grid HorizontalAlignment="Right"
+						  VerticalAlignment="Center"
+						  Margin="0 0 10 0"
+						  Visibility="{Binding Model.UnreadNewsCount, Source={StaticResource ShellViewModel}, Converter={StaticResource IntToVisibilityConverter}}">
+						<Ellipse Width="30"
+								 Height="30"
+								 Fill="{StaticResource Background}"
+								 Stroke="{StaticResource ActiveBorderBrush}"
+								 StrokeThickness="1" />
+						<TextBlock Text="{Binding Model.UnreadNewsCount, Source={StaticResource ShellViewModel}, Converter={StaticResource PushCountToInfoConverter}}"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center" />
+					</Grid>
+				</Grid>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:OverviewPage"
+										  PageParameter="Anime"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE786;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Anime" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:OverviewPage"
+										  PageParameter="Manga"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE82D;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Manga" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:SearchPage"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE1A3;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Suche" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:UserControlPanelPage"
+										  AutomationProperties.Name="Proxer"
+										  Visibility="{Binding Model.IsUserLoggedIn, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+				<StackPanel Orientation="Horizontal">
+					<Image Width="48"
+						   Height="48"
+						   Source="{Binding Model.GlobalAvatar, Source={StaticResource ShellViewModel}, Converter={StaticResource StringToAvatarConverter}}" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="{Binding Model.GlobalUsername, Source={StaticResource ShellViewModel}}" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:MessengerPage"
+										  AutomationProperties.Name="Proxer"
+										  Visibility="{Binding Model.IsUserLoggedIn, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+				<Grid>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Width="48"
+								  Height="48"
+								  Glyph="&#xE715;" />
+						<TextBlock Margin="12,0,0,0"
+								   VerticalAlignment="Center"
+								   Text="Messenger" />
+					</StackPanel>
+					<Grid HorizontalAlignment="Right"
+						  VerticalAlignment="Center"
+						  Margin="0 0 10 0"
+						  Visibility="{Binding Model.UnreadMessageCount, Source={StaticResource ShellViewModel}, Converter={StaticResource IntToVisibilityConverter}}">
+						<Ellipse Width="30"
+								 Height="30"
+								 Fill="{StaticResource Background}"
+								 Stroke="{StaticResource ActiveBorderBrush}"
+								 StrokeThickness="1" />
+						<TextBlock Text="{Binding Model.UnreadMessageCount, Source={StaticResource ShellViewModel}, Converter={StaticResource PushCountToInfoConverter}}"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center" />
+					</Grid>
+				</Grid>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="False"
+										  Command="{Binding ShowNotifications, Source={StaticResource ShellViewModel}}"
+										  ButtonType="Command"
+										  AutomationProperties.Name="Proxer"
+										  Visibility="{Binding Model.IsUserLoggedIn, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+				<Grid>
+					<StackPanel Orientation="Horizontal">
+						<FontIcon Width="48"
+								  Height="48"
+								  Glyph="&#xEC42;" />
+						<TextBlock Margin="12,0,0,0"
+								   VerticalAlignment="Center"
+								   Text="Notifications" />
+					</StackPanel>
+					<Grid HorizontalAlignment="Right"
+						  VerticalAlignment="Center"
+						  Margin="0 0 10 0"
+						  Visibility="{Binding Model.UnreadNotificationsCount, Source={StaticResource ShellViewModel}, Converter={StaticResource IntToVisibilityConverter}}">
+						<Ellipse Width="30"
+								 Height="30"
+								 Fill="{StaticResource Background}"
+								 Stroke="{StaticResource ActiveBorderBrush}"
+								 StrokeThickness="1" />
+						<TextBlock Text="{Binding Model.UnreadNotificationsCount, Source={StaticResource ShellViewModel}, Converter={StaticResource PushCountToInfoConverter}}"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center" />
+					</Grid>
+				</Grid>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="True"
+										  PageType="local:StatisticsPage"
+										  AutomationProperties.Name="Proxer"
+										  IsEnabled="False"
+										  Visibility="{Binding Model.IsUserLoggedIn, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE877;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Stats" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+		</controls:HamburgerMenu.PrimaryButtons>
+		<controls:HamburgerMenu.SecondaryButtons>
+			<controls:HamburgerButtonInfo ClearHistory="False"
+										  PageType="local:LoginPage"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE192;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Login" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="False"
+										  PageType="local:SettingsPage"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE115;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Settings" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+			<controls:HamburgerButtonInfo ClearHistory="False"
+										  PageType="local:WebPage"
+										  PageParameter="https://www.proxer.me/misc/captcha"
+										  AutomationProperties.Name="Proxer">
+				<StackPanel Orientation="Horizontal">
+					<FontIcon Width="48"
+							  Height="48"
+							  Glyph="&#xE087;" />
+					<TextBlock Margin="12,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="Captcha" />
+				</StackPanel>
+			</controls:HamburgerButtonInfo>
+		</controls:HamburgerMenu.SecondaryButtons>
+	</controls:HamburgerMenu>
+</Page>

@@ -1,0 +1,458 @@
+﻿<UserControl x:Class="Proxer.Me.UWP.UserControls.FullEntryControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Proxer.Me.UWP.UserControls"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="400"
+			 xmlns:info="using:Proxer.Me.Support.Api.Data.Info"
+			 xmlns:controls="using:Proxer.Me.Controls">
+
+	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="Layout">
+				<VisualState x:Name="Mobile">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="cover.Width"
+								Value="150" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Default">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="550" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="cover.Width"
+								Value="220" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<ScrollViewer VerticalScrollBarVisibility="Auto">
+			<StackPanel Orientation="Vertical"
+						Margin="3">
+				<Image Source="{Binding Model.FullEntry.ID, Converter={StaticResource IDToImageConverter}}"
+					   Width="220"
+					   x:Name="cover"
+					   HorizontalAlignment="Center"
+					   Stretch="Fill" />
+				<RelativePanel Height="65"
+							   BorderBrush="{StaticResource ActiveBorderBrush}"
+							   BorderThickness="1"
+							   Margin="5"
+							   x:Name="rating">
+					<Grid RelativePanel.AlignLeftWithPanel="True"
+						  RelativePanel.AlignRightWithPanel="True"
+						  Visibility="{Binding Model.FullEntry.RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=true}">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<ProgressBar Value="{Binding Model.FullEntry, Converter={StaticResource ProgressRatingConverter}}"
+									 FlowDirection="RightToLeft"
+									 Foreground="{StaticResource ContentBackground}"
+									 x:Name="ratingProgress"
+									 VerticalAlignment="Center"
+									 VerticalContentAlignment="Center"
+									 RelativePanel.AlignLeftWithPanel="True"
+									 RelativePanel.AlignRightWithPanel="True"
+									 Height="30"
+									 Visibility="{Binding Model.SettingsModel.RatingStyle, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=0}">
+							<ProgressBar.Background>
+								<LinearGradientBrush>
+									<GradientStop Offset="0"
+												  Color="{Binding Model.SettingsModel.HighHeatColor.Color}" />
+									<GradientStop Offset=".5"
+												  Color="{Binding Model.SettingsModel.MiddleHeatColor.Color}" />
+									<GradientStop Offset="1"
+												  Color="{Binding Model.SettingsModel.LowHeatColor.Color}" />
+								</LinearGradientBrush>
+							</ProgressBar.Background>
+						</ProgressBar>
+						<ItemsControl ItemsSource="{Binding Model.FullEntry, Mode=OneWay, Converter={StaticResource RatingToStarsConverter}}"
+									  Height="30"
+									  Margin="5"
+									  x:Name="starRating"
+									  HorizontalAlignment="Center"
+									  HorizontalContentAlignment="Center"
+									  Visibility="{Binding Model.SettingsModel.RatingStyle, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=2}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="&#xE00A;"
+											   FontFamily="Segoe MDL2 Assets"
+											   FontSize="24"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Opacity="{Binding }" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal">
+									</StackPanel>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
+						<Grid Visibility="{Binding Model.SettingsModel.RatingStyle, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=1}">
+							<TextBlock x:Name="recomandation_list_plus"
+									   VerticalAlignment="Center"
+									   HorizontalAlignment="Center"
+									   Text="&#xE8E1;"
+									   MinWidth="75"
+									   Margin="5"
+									   TextAlignment="Center"
+									   Visibility="{Binding Model.FullEntry, Mode=OneWay, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=true}"
+									   FontFamily="Segoe MDL2 Assets">
+							</TextBlock>
+							<TextBlock x:Name="recomandation_list_minus"
+									   VerticalAlignment="Center"
+									   HorizontalAlignment="Center"
+									   Text="&#xE8E0;"
+									   MinWidth="75"
+									   Margin="5"
+									   TextAlignment="Center"
+									   Visibility="{Binding Model.FullEntry, Mode=OneWay, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=false}"
+									   FontFamily="Segoe MDL2 Assets">
+							</TextBlock>
+						</Grid>
+						<StackPanel Orientation="Horizontal"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center"
+									Grid.Row="1">
+							<TextBlock Text="{Binding Model.FullEntry, Mode=OneWay, Converter={StaticResource RatingConverter}}"
+									   FontSize="18" />
+							<TextBlock Text="/"
+									   FontSize="18" />
+							<TextBlock Text="10"
+									   FontSize="18" />
+							<TextBlock Text="("
+									   FontSize="18"
+									   Margin="5 0 0 0" />
+							<TextBlock Text="{Binding Model.FullEntry.RateCount}"
+									   FontSize="18" />
+							<TextBlock Text=")"
+									   FontSize="18" />
+						</StackPanel>
+					</Grid>
+					<TextBlock Text="Unrated"
+							   FontSize="25"
+							   RelativePanel.AlignBottomWithPanel="True"
+							   RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   RelativePanel.AlignTopWithPanel="True"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Center"
+							   Visibility="{Binding Model.FullEntry.RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=false}" />
+				</RelativePanel>
+				<Border Height="65"
+						BorderBrush="{StaticResource ActiveBorderBrush}"
+						BorderThickness="1"
+						Margin="5">
+					<Grid HorizontalAlignment="Center">
+
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<Image Source="{Binding Model.FullEntry.State, Converter={StaticResource StateImageConverter}}"
+							   Stretch="Fill"
+							   Width="24"
+							   Height="24"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Center"
+							   Margin="3" />
+						<FontIcon Width="32"
+								  Height="32"
+								  VerticalAlignment="Center"
+								  HorizontalAlignment="Center"
+								  Glyph="&#xE10B;"
+								  Grid.Column="1"
+								  Margin="3"
+								  Visibility="{Binding Model.FullEntry.License, Converter={StaticResource LicenseToVisibilityConverter}, ConverterParameter=2}" />
+						<FontIcon Width="32"
+								  Height="32"
+								  VerticalAlignment="Center"
+								  HorizontalAlignment="Center"
+								  Glyph="&#xE10A;"
+								  Grid.Column="1"
+								  Margin="3"
+								  Visibility="{Binding Model.FullEntry.License, Converter={StaticResource LicenseToVisibilityConverter}, ConverterParameter=1}" />
+						<Button Grid.Column="2"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Margin="3"
+								Command="{Binding CacheEntry}">
+							<FontIcon Width="32"
+									  Height="32"
+									  VerticalAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Glyph="&#xE12A;" />
+						</Button>
+						<Button Grid.Column="3"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Margin="3"
+								Command="{Binding NoteEntry}">
+							<FontIcon Width="32"
+									  Height="32"
+									  VerticalAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Glyph="&#xE104;" />
+						</Button>
+						<Button Grid.Column="4"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Margin="3"
+								Command="{Binding FavriotEntry}">
+							<FontIcon Width="32"
+									  Height="32"
+									  VerticalAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Glyph="&#xE00A;" />
+						</Button>
+						<Button Grid.Column="5"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Margin="3"
+								Command="{Binding FinishEntry}">
+							<FontIcon Width="32"
+									  Height="32"
+									  VerticalAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Glyph="&#xE0A2;" />
+						</Button>
+					</Grid>
+				</Border>
+				<controls:Expander Header="Names"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<ItemsControl ItemsSource="{Binding Model.FullEntry.Names}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="110" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+									<Grid Margin="3">
+										<Grid.Background>
+											<SolidColorBrush Color="{Binding Color, Source={StaticResource ActiveBackground}}"
+															 Opacity=".65" />
+										</Grid.Background>
+										<TextBlock Text="{Binding Type, Converter={StaticResource TypeNameConverter}}"
+												   Margin="3" />
+									</Grid>
+									<Grid Margin="3"
+										  Grid.Column="1">
+										<Grid.Background>
+											<SolidColorBrush Color="{Binding Color, Source={StaticResource ActiveBackground}}"
+															 Opacity=".65" />
+										</Grid.Background>
+										<TextBlock Text="{Binding Name}"
+												   Margin="3"
+												   TextWrapping="Wrap" />
+									</Grid>
+								</Grid>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</controls:Expander>
+				<controls:Expander Header="Genre"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<ListView ItemsSource="{Binding Model.FullEntry.Genre, Converter={StaticResource StringSplitConverter}}"
+							  SelectionMode="None"
+							  VerticalContentAlignment="Center"
+							  MaxHeight="200">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding }"
+										   VerticalAlignment="Center" />
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</controls:Expander>
+				<controls:Expander Header="Tags"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<controls:Expander.Resources>
+						<CollectionViewSource IsSourceGrouped="True"
+											  Source="{Binding Model.FullEntry.Tags, Converter={StaticResource TagGroupConverter}}"
+											  x:Key="groupedTags" />
+					</controls:Expander.Resources>
+					<ListView ItemsSource="{Binding Source={StaticResource groupedTags}}"
+							  SelectionMode="None"
+							  VerticalContentAlignment="Center"
+							  MaxHeight="200">
+						<ListView.ItemsPanel>
+							<ItemsPanelTemplate>
+								<ItemsStackPanel Orientation="Vertical"
+												 AreStickyGroupHeadersEnabled="True">
+								</ItemsStackPanel>
+							</ItemsPanelTemplate>
+						</ListView.ItemsPanel>
+						<ListView.GroupStyle>
+							<GroupStyle>
+								<GroupStyle.HeaderTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Key, Converter={StaticResource TagStateToGroupNameConverter}}"
+												   VerticalAlignment="Center"
+												   HorizontalAlignment="Center"
+												   Margin="4" />
+									</DataTemplate>
+								</GroupStyle.HeaderTemplate>
+							</GroupStyle>
+						</ListView.GroupStyle>
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<TextBlock Text="{Binding Name}"
+											   VerticalAlignment="Center"
+											   Visibility="{Binding TagState, Converter={StaticResource InvertedTagSpoilerVisibilityConverter}}" />
+									<Grid Visibility="{Binding TagState, Converter={StaticResource TagSpoilerVisibilityConverter}}">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock Text="{Binding Name}"
+													   VerticalAlignment="Center"
+													   Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=visibilityToggle}" />
+											<TextBlock Text="{Binding TagState, Converter={StaticResource TagSpoilerNameConverter}}"
+													   VerticalAlignment="Center"
+													   Visibility="{Binding IsChecked, Converter={StaticResource InvertedBoolToVisibilityConverter}, ElementName=visibilityToggle}" />
+											<ToggleButton x:Name="visibilityToggle"
+														  IsChecked="False"
+														  BorderBrush="Transparent"
+														  Background="Transparent"
+														  Margin="2 0"
+														  Visibility="{Binding IsChecked, Converter={StaticResource InvertedBoolToVisibilityConverter}, ElementName=visibilityToggle}">
+												<ToggleButton.Content>
+													<FontIcon Glyph="&#xE052;"
+															  Height="20"
+															  Width="20" />
+												</ToggleButton.Content>
+											</ToggleButton>
+										</StackPanel>
+									</Grid>
+								</StackPanel>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</controls:Expander>
+				<controls:Expander Header="PSK"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<GridView ItemsSource="{Binding Model.FullEntry.FSK, Converter={StaticResource StringSplitConverter}}"
+							  SelectionMode="None"
+							  HorizontalContentAlignment="Center"
+							  HorizontalAlignment="Center">
+						<GridView.ItemTemplate>
+							<DataTemplate>
+								<Image Stretch="Fill"
+									   Height="64"
+									   Width="64"
+									   Source="{Binding Mode=OneWay, Converter={StaticResource FSKToImageConverter}}" />
+							</DataTemplate>
+						</GridView.ItemTemplate>
+					</GridView>
+				</controls:Expander>
+				<controls:Expander Header="People"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<controls:Expander.Resources>
+						<CollectionViewSource IsSourceGrouped="True"
+											  Source="{Binding Model.FullEntry.People, Converter={StaticResource PeopleToGroupedPeopleConverter}}"
+											  x:Key="groupedPeople" />
+					</controls:Expander.Resources>
+					<ListView ItemsSource="{Binding Source={StaticResource groupedPeople}}"
+							  SelectionMode="None"
+							  VerticalContentAlignment="Center"
+							  MaxHeight="200"
+							  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+						<ListView.ItemsPanel>
+							<ItemsPanelTemplate>
+								<ItemsStackPanel Orientation="Vertical"
+												 AreStickyGroupHeadersEnabled="True">
+								</ItemsStackPanel>
+							</ItemsPanelTemplate>
+						</ListView.ItemsPanel>
+						<ListView.GroupStyle>
+							<GroupStyle>
+								<GroupStyle.HeaderTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Key, Converter={StaticResource PeopleSortKeyToNameConverter}}"
+												   VerticalAlignment="Center"
+												   HorizontalAlignment="Center"
+												   Margin="4" />
+									</DataTemplate>
+								</GroupStyle.HeaderTemplate>
+							</GroupStyle>
+						</ListView.GroupStyle>
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<Image Source="{Binding Country, Converter={StaticResource CountryToImageConverter}}"
+										   Stretch="Fill"
+										   VerticalAlignment="Center"
+										   Height="16"
+										   Margin="2 0"
+										   Width="24" />
+									<TextBlock Text="{Binding Name}"
+											   VerticalAlignment="Center"
+											   Margin="2 0" />
+									<StackPanel Orientation="Horizontal"
+												Margin="2 0"
+												Visibility="{Binding Type, Converter={StaticResource NullToVisibilityConverter}}">
+										<TextBlock Text="("
+												   VerticalAlignment="Center" />
+										<TextBlock Text="{Binding Type, Converter={StaticResource FirstCharToUpperCastConverter}}"
+												   VerticalAlignment="Center" />
+										<TextBlock Text=")"
+												   VerticalAlignment="Center" />
+									</StackPanel>
+								</StackPanel>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</controls:Expander>
+				<controls:Expander Header="Beschreibung"
+								   VerticalAlignment="Top"
+								   ExpandDirection="Down"
+								   Margin="3"
+								   BorderBrush="{StaticResource ActiveBorderBrush}"
+								   HeaderBorderThickness="0 0 0 1"
+								   ShowHeaderBorderOnlyWhenExpanded="True">
+					<TextBlock Text="{Binding Model.FullEntry.Description}"
+							   TextWrapping="WrapWholeWords" />
+				</controls:Expander>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

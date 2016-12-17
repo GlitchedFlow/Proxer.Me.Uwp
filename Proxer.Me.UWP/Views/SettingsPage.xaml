@@ -1,0 +1,458 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.SettingsPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:toolkit="using:WinRTXamlToolkit.Controls"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:cp="using:ColorPicker"
+	  xmlns:controls="using:Proxer.Me.Controls"
+	  DataContext="{StaticResource SettingsViewModel}">
+
+	<RelativePanel x:Name="rootPanel"
+				   Background="{StaticResource ContentBackground}">
+		<template:PageHeader Text="Settings"
+							 RelativePanel.AlignLeftWithPanel="True"
+							 RelativePanel.AlignTopWithPanel="True"
+							 RelativePanel.AlignRightWithPanel="True"
+							 x:Name="header">
+			<template:PageHeader.PrimaryCommands>
+				<AppBarButton Icon="Save"
+							  Label="Speichern"
+							  Command="{Binding SaveSettings}"/>
+				<AppBarButton Icon="Cancel"
+							  Label="Abbrechen" 
+							  Command="{Binding CancelSettings}"/>
+			</template:PageHeader.PrimaryCommands>
+		</template:PageHeader>
+		<Pivot RelativePanel.Below="header"
+			   RelativePanel.AlignLeftWithPanel="True"
+			   RelativePanel.AlignRightWithPanel="True">
+			<PivotItem Header="General">
+				<ScrollViewer>
+					<StackPanel Orientation="Vertical">
+						<ToggleSwitch OffContent="Header aus"
+									  OnContent="Header an"
+									  Margin="5"
+									  IsOn="{Binding Model.ShowHeader, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Newsbilder aus"
+									  OnContent="Newsbilder an"
+									  Margin="5"
+									  IsOn="{Binding Model.ShowNewsImages, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="News in App"
+									  OnContent="News in Browser"
+									  Margin="5"
+									  IsOn="{Binding Model.OpenNewsInBrowser, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Latest Updates aus"
+									  OnContent="Latest Updates an"
+									  Margin="5"
+									  IsOn="{Binding Model.ShowLatestUpdates, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Einstellungen nicht synchronisieren"
+									  OnContent="Einstellungen synchronisieren"
+									  Margin="5"
+									  IsEnabled="False"
+									  IsOn="{Binding Model.SyncSettings, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Seiten-Reader an"
+									  OnContent="Endless-Reader an"
+									  Margin="5"
+									  IsOn="{Binding Model.UseLongReader, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Einträge als Grid"
+									  OnContent="Einträge als Liste"
+									  Margin="5"
+									  IsOn="{Binding Model.ShowEntriesInList, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Gridinfos geschlossen"
+									  OnContent="Gridinfos offen"
+									  Margin="5"
+									  IsOn="{Binding Model.GridItemsOpen, Mode=TwoWay}" />
+						<ToggleSwitch OffContent="Gridinfos nach unten gerichtet"
+									  OnContent="Gridinfos nach oben gerichtet"
+									  Margin="5"
+									  IsOn="{Binding Model.GridExpanderUp, Mode=TwoWay}" />
+						<StackPanel Orientation="Horizontal"
+									Margin="5">
+							<TextBlock Text="Listen Sortieren nach:"
+									   VerticalAlignment="Center"
+									   Margin="5"
+									   MinWidth="130" />
+							<ComboBox SelectedIndex="{Binding Model.ListSort, Mode=TwoWay}"
+									  Width="150"
+									  IsEnabled="False"
+									  Margin="5">
+								<ComboBoxItem Content="Bewertung" />
+								<ComboBoxItem Content="Titel" />
+								<ComboBoxItem Content="Zugriffe" />
+							</ComboBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal"
+									Margin="5">
+							<TextBlock Text="Rating Style:"
+									   VerticalAlignment="Center"
+									   Margin="5"
+									   MinWidth="130" />
+							<ComboBox ItemsSource="{Binding Model.RatingStyleSource}"
+									  SelectedItem="{Binding Model.RatingStyle, Mode=TwoWay}"
+									  Width="150"
+									  Margin="5" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal"
+									Margin="5">
+							<TextBlock Text="Gridinfos Position"
+									   VerticalAlignment="Center"
+									   Margin="5"
+									   MinWidth="130" />
+							<ComboBox ItemsSource="{Binding Model.ExpanderPositionSource}"
+									  SelectedItem="{Binding Model.GridExpanderPositionViewProperty, Mode=TwoWay}"
+									  Width="150"
+									  Margin="5" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal"
+									Margin="5">
+							<TextBlock Text="Empfehlung ab:"
+									   VerticalAlignment="Center"
+									   Margin="5"
+									   MinWidth="130" />
+							<toolkit:NumericUpDown Width="150"
+												   Maximum="10.0"
+												   Minimum="0.0"
+												   Margin="5"
+												   Value="{Binding Model.RecommendationValue, Mode=TwoWay}" />
+						</StackPanel>
+					</StackPanel>
+				</ScrollViewer>
+			</PivotItem>
+			<!--<PivotItem Header="Theme"
+					   IsEnabled="False">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<StackPanel Orientation="Vertical"
+								Margin="3">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+
+							<TextBlock Text="Style:"
+									   VerticalAlignment="Center"
+									   Margin="3" />
+
+							<ComboBox Grid.Column="1"
+									  Margin="3"
+									  HorizontalAlignment="Stretch"
+									  HorizontalContentAlignment="Stretch" />
+						</Grid>
+
+						<controls:Expander Header="Active Background"
+										   HeaderBorderBackground="{StaticResource ActiveBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=abg}"
+										   Margin="3">
+							<cp:ColorPicker SelectedColor="{Binding Model.StyleProvider.ActiveBackground, Mode=TwoWay}" />
+						</controls:Expander>
+
+						<controls:Expander Header="ActiveBorderBrush"
+										   HeaderBorderBackground="{StaticResource ActiveBorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=abb}"
+										   Margin="3">
+							<Popup x:Name="abb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ActiveBorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ActiveForeground"
+										   HeaderBorderBackground="{StaticResource ActiveForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=afg}"
+										   Margin="3">
+							<Popup x:Name="afg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ActiveForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="Background"
+										   HeaderBorderBackground="{StaticResource Background}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=bg}"
+										   Margin="3">
+							<Popup x:Name="bg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.Background, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="BorderBrush"
+										   HeaderBorderBackground="{StaticResource BorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=bb}"
+										   Margin="3">
+							<Popup x:Name="bb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.BorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ClickedBackground"
+										   HeaderBorderBackground="{StaticResource ClickedBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=cbg}"
+										   Margin="3">
+							<Popup x:Name="cbg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ClickedBackground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ClickedBorderBrush"
+										   HeaderBorderBackground="{StaticResource ClickedBorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=cbb}"
+										   Margin="3">
+							<Popup x:Name="cbb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ClickedBorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ClickedForeground"
+										   HeaderBorderBackground="{StaticResource ClickedForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=cfg}"
+										   Margin="3">
+							<Popup x:Name="cfg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ClickedForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ContentBackground"
+										   HeaderBorderBackground="{StaticResource ContentBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=cob}"
+										   Margin="3">
+							<Popup x:Name="cob"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ContentBackground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="ContentForeground"
+										   HeaderBorderBackground="{StaticResource ContentForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=cof}"
+										   Margin="3">
+							<Popup x:Name="cof"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.ContentForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="DisabledBackground"
+										   HeaderBorderBackground="{StaticResource DisabledBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=dbg}"
+										   Margin="3">
+							<Popup x:Name="dbg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.DisabledBackground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="DisabledBorderBrush"
+										   HeaderBorderBackground="{StaticResource DisabledBorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=dbb}"
+										   Margin="3">
+							<Popup x:Name="dbb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.DisabledBorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+						<controls:Expander Header="DisabledForeground"
+										   HeaderBorderBackground="{StaticResource DisabledForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=dfg}"
+										   Margin="3">
+							<Popup x:Name="dfg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.DisabledForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="FocusedBackground"
+										   HeaderBorderBackground="{StaticResource FocusedBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=fbg}"
+										   Margin="3">
+							<Popup x:Name="fbg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.FocusedBackground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="FocusedBorderBrush"
+										   HeaderBorderBackground="{StaticResource FocusedBorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=fbb}"
+										   Margin="3">
+							<Popup x:Name="fbb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.FocusedBorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="FocusedForeground"
+										   HeaderBorderBackground="{StaticResource FocusedForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=ffg}"
+										   Margin="3">
+							<Popup x:Name="ffg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.FocusedForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="Foreground"
+										   HeaderBorderBackground="{StaticResource Foreground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=fg}"
+										   Margin="3">
+							<Popup x:Name="fg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.Foreground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="HoverBackground"
+										   HeaderBorderBackground="{StaticResource HoverBackground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=hbg}"
+										   Margin="3">
+							<Popup x:Name="hbg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.HoverBackground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="HoverBorderBrush"
+										   HeaderBorderBackground="{StaticResource HoverBorderBrush}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=hbb}"
+										   Margin="3">
+							<Popup x:Name="hbb"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.HoverBorderBrush, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="HoverForeground"
+										   HeaderBorderBackground="{StaticResource HoverForeground}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=hfg}"
+										   Margin="3">
+							<Popup x:Name="hfg"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.HoverForeground, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+
+						<controls:Expander Header="Separator"
+										   HeaderBorderBackground="{StaticResource Separator}"
+										   BorderBrush="Transparent"
+										   ShowHeaderBorderOnlyWhenExpanded="False"
+										   IsExpanded="{Binding IsOpen, Mode=TwoWay, ElementName=sep}"
+										   Margin="3">
+							<Popup x:Name="sep"
+								   IsLightDismissEnabled="True"
+								   HorizontalAlignment="Stretch">
+								<cp:ColorPicker Height="300"
+												Width="300"
+												SelectedColor="{Binding Model.StyleProvider.Separator, Mode=TwoWay}" />
+							</Popup>
+						</controls:Expander>
+					</StackPanel>
+				</ScrollViewer>
+			</PivotItem>-->
+		</Pivot>
+	</RelativePanel>
+</Page>

@@ -1,0 +1,407 @@
+﻿<UserControl x:Class="Proxer.Me.UWP.UserControls.SearchEntryControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Proxer.Me.UWP.UserControls"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+			 xmlns:proxControls="using:Proxer.Me.Controls"
+			 xmlns:toolkit="using:WinRTXamlToolkit.Controls"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="400">
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<RelativePanel Margin="3">
+			<StackPanel Orientation="Horizontal"
+						Margin="3"
+						RelativePanel.AlignHorizontalCenterWithPanel="True"
+						x:Name="topCommands">
+				<Button Content="Suche starten"
+						Margin="3"
+						Command="{Binding StartSearch}" />
+				<Button Content="Suche zurücksetzen"
+						Margin="3"
+						Command="{Binding ClearSearch}" />
+			</StackPanel>
+			<proxControls:Expander Header="Titel"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="topCommands"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   IsExpanded="True"
+								   Margin="3"
+								   x:Name="title">
+				<TextBox Text="{Binding Model.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						 PlaceholderText="Titel"
+						 Margin="3"
+						 attached:InputHelper.EnterCommandEnabled="True"
+						 attached:InputHelper.EnterCommand="{Binding StartSearch}" />
+			</proxControls:Expander>
+			<proxControls:Expander Header="Sprache"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="title"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="language">
+				<StackPanel Orientation="Vertical"
+							Margin="3">
+					<RadioButton Content="Alle"
+								 Margin="3"
+								 IsChecked="{Binding Model.BothLanguages, Mode=TwoWay}" />
+					<RadioButton Content="Deutsch"
+								 Margin="3"
+								 IsChecked="{Binding Model.GermanOnly, Mode=TwoWay}" />
+					<RadioButton Content="Englisch"
+								 Margin="3"
+								 IsChecked="{Binding Model.EnglishOnly, Mode=TwoWay}" />
+				</StackPanel>
+			</proxControls:Expander>
+			<proxControls:Expander Header="Typ"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="language"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="type">
+				<StackPanel Orientation="Vertical"
+							Margin="3">
+					<RadioButton Content="Alles"
+								 Margin="3"
+								 IsChecked="{Binding Model.All, Mode=TwoWay}" />
+					<RadioButton Content="Alles (mit Explicit)"
+								 Margin="3"
+								 IsChecked="{Binding Model.AllWithExplicit, Mode=TwoWay}"
+								 Visibility="{Binding Model.ShowAdultContent, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}" />
+					<RadioButton Content="Alle Anime"
+								 Margin="3"
+								 IsChecked="{Binding Model.AllAnime, Mode=TwoWay}" />
+					<RadioButton Content="Alle Manga"
+								 Margin="3"
+								 IsChecked="{Binding Model.AllManga, Mode=TwoWay}" />
+					<RadioButton Content="Anime-Serie"
+								 Margin="3"
+								 IsChecked="{Binding Model.AnimeSerie, Mode=TwoWay}" />
+					<RadioButton Content="Movie"
+								 Margin="3"
+								 IsChecked="{Binding Model.Movie, Mode=TwoWay}" />
+					<RadioButton Content="OVA/Special"
+								 Margin="3"
+								 IsChecked="{Binding Model.OVA, Mode=TwoWay}" />
+					<RadioButton Content="Hentai"
+								 Margin="3"
+								 IsChecked="{Binding Model.Hentai, Mode=TwoWay}"
+								 Visibility="{Binding Model.ShowAdultContent, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}" />
+					<RadioButton Content="Manga-Serie"
+								 Margin="3"
+								 IsChecked="{Binding Model.MangaSerie, Mode=TwoWay}" />
+					<RadioButton Content="One-Shot"
+								 Margin="3"
+								 IsChecked="{Binding Model.OneShot, Mode=TwoWay}" />
+					<RadioButton Content="Doujinshi"
+								 Margin="3"
+								 IsChecked="{Binding Model.Doujinshi, Mode=TwoWay}"
+								 Visibility="{Binding Model.ShowAdultContent, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}" />
+					<RadioButton Content="H-Manga"
+								 Margin="3"
+								 IsChecked="{Binding Model.HManga, Mode=TwoWay}"
+								 Visibility="{Binding Model.ShowAdultContent, Source={StaticResource ShellViewModel}, Converter={StaticResource BoolToVisibilityConverter}}" />
+				</StackPanel>
+			</proxControls:Expander>
+			<proxControls:Expander Header="Genre"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="type"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="genre">
+				<proxControls:Expander.Resources>
+					<CollectionViewSource IsSourceGrouped="True"
+										  Source="{Binding Model.Genres, Mode=TwoWay}"
+										  x:Key="genres" />
+				</proxControls:Expander.Resources>
+				<ListView ItemsSource="{Binding Source={StaticResource genres}}"
+						  IsItemClickEnabled="False"
+						  SelectionMode="None"
+						  MaxHeight="350">
+					<ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<ItemsStackPanel Orientation="Vertical"
+											 AreStickyGroupHeadersEnabled="True">
+							</ItemsStackPanel>
+						</ItemsPanelTemplate>
+					</ListView.ItemsPanel>
+					<ListView.GroupStyle>
+						<GroupStyle>
+							<GroupStyle.HeaderTemplate>
+								<DataTemplate>
+									<Border BorderThickness="1"
+											BorderBrush="{StaticResource BorderBrush}"
+											Background="{StaticResource Background}"
+											MinHeight="30"
+											MinWidth="30">
+										<TextBlock Text="{Binding Key}"
+												   VerticalAlignment="Center"
+												   HorizontalAlignment="Center"
+												   Foreground="{StaticResource Foreground}"
+												   Margin="2" />
+									</Border>
+								</DataTemplate>
+							</GroupStyle.HeaderTemplate>
+						</GroupStyle>
+					</ListView.GroupStyle>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<CheckBox Content="{Binding DisplayName}"
+									  IsThreeState="True"
+									  attached:NullableCheckbox.Enabled="True"
+									  attached:NullableCheckbox.IsChecked="{Binding State, Mode=TwoWay}"
+									  HorizontalAlignment="Stretch"
+									  HorizontalContentAlignment="Stretch" />
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</proxControls:Expander>
+			<proxControls:Expander Header="Tags"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="genre"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="tags">
+				<RelativePanel Margin="3">
+					<RelativePanel.Resources>
+						<CollectionViewSource IsSourceGrouped="True"
+											  Source="{Binding Model.Tags, Mode=TwoWay}"
+											  x:Key="tags" />
+					</RelativePanel.Resources>
+					<TextBox Text="{Binding Model.TagQuickSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							 RelativePanel.AlignLeftWithPanel="True"
+							 RelativePanel.AlignRightWithPanel="True"
+							 Margin="3"
+							 attached:InputHelper.EnterCommandEnabled="True"
+							 attached:InputHelper.EnterCommand="{Binding SetTag}"
+							 x:Name="tagQuickSearch" />
+					<CheckBox Content="{Binding Model.SpoilerStateString}"
+							  IsThreeState="True"
+							  attached:NullableCheckbox.Enabled="True"
+							  attached:NullableCheckbox.IsChecked="{Binding Model.SpoilerState, Mode=TwoWay}"
+							  HorizontalAlignment="Stretch"
+							  HorizontalContentAlignment="Stretch"
+							  x:Name="spoiler"
+							  RelativePanel.Below="tagQuickSearch"
+							  Margin="3" />
+					<CheckBox Content="Unbestimme Tags einbeziehen"
+							  IsChecked="{Binding Model.TagFilterState, Mode=TwoWay}"
+							  HorizontalAlignment="Stretch"
+							  HorizontalContentAlignment="Stretch"
+							  x:Name="tagFilter"
+							  RelativePanel.Below="spoiler"
+							  Margin="3" />
+					<ListView RelativePanel.Below="tagFilter"
+							  ItemsSource="{Binding Source={StaticResource tags}}"
+							  RelativePanel.AlignLeftWithPanel="True"
+							  RelativePanel.AlignRightWithPanel="True"
+							  IsItemClickEnabled="False"
+							  SelectionMode="None"
+							  MaxHeight="350">
+						<ListView.ItemsPanel>
+							<ItemsPanelTemplate>
+								<ItemsStackPanel Orientation="Vertical"
+												 AreStickyGroupHeadersEnabled="True">
+								</ItemsStackPanel>
+							</ItemsPanelTemplate>
+						</ListView.ItemsPanel>
+						<ListView.GroupStyle>
+							<GroupStyle>
+								<GroupStyle.HeaderTemplate>
+									<DataTemplate>
+										<Border BorderThickness="1"
+												BorderBrush="{StaticResource BorderBrush}"
+												Background="{StaticResource Background}"
+												MinHeight="30"
+												MinWidth="30">
+											<TextBlock Text="{Binding Key}"
+													   VerticalAlignment="Center"
+													   HorizontalAlignment="Center"
+													   Foreground="{StaticResource Foreground}"
+													   Margin="2" />
+										</Border>
+									</DataTemplate>
+								</GroupStyle.HeaderTemplate>
+							</GroupStyle>
+						</ListView.GroupStyle>
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<CheckBox Content="{Binding DisplayName}"
+										  IsThreeState="True"
+										  attached:NullableCheckbox.Enabled="True"
+										  attached:NullableCheckbox.IsChecked="{Binding State, Mode=TwoWay}"
+										  HorizontalAlignment="Stretch"
+										  HorizontalContentAlignment="Stretch" />
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</RelativePanel>
+			</proxControls:Expander>
+			<proxControls:Expander Header="PSK"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="tags"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="psk">
+				<StackPanel Orientation="Vertical"
+							Margin="3">
+					<StackPanel Orientation="Horizontal">
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  IsChecked="{Binding Model.Psk0, Mode=TwoWay}"
+								  x:Name="psk0">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fsk0.png" />
+						</CheckBox>
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="psk6"
+								  IsChecked="{Binding Model.Psk6, Mode=TwoWay}"
+								  RelativePanel.RightOf="psk0">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fsk6.png" />
+						</CheckBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="psk12"
+								  IsChecked="{Binding Model.Psk12, Mode=TwoWay}"
+								  RelativePanel.Below="psk0">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fsk12.png" />
+						</CheckBox>
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="psk16"
+								  IsChecked="{Binding Model.Psk16, Mode=TwoWay}"
+								  RelativePanel.RightOf="psk12"
+								  RelativePanel.Below="psk6">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fsk16.png" />
+						</CheckBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="psk18"
+								  IsChecked="{Binding Model.Psk18, Mode=TwoWay}"
+								  RelativePanel.Below="psk12">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fsk18.png" />
+						</CheckBox>
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="bad_language"
+								  IsChecked="{Binding Model.BadLanguage, Mode=TwoWay}"
+								  RelativePanel.RightOf="psk18"
+								  RelativePanel.Below="psk16">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/bad_language.png" />
+						</CheckBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="violence"
+								  IsChecked="{Binding Model.Violence, Mode=TwoWay}"
+								  RelativePanel.Below="psk18">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/violence.png" />
+						</CheckBox>
+						<CheckBox MaxHeight="110"
+								  Margin="3"
+								  x:Name="fear"
+								  IsChecked="{Binding Model.Fear, Mode=TwoWay}"
+								  RelativePanel.Below="bad_language"
+								  RelativePanel.RightOf="violence">
+							<Image Source="ms-appx:///Assets/Proxer/PSK/fear.png" />
+						</CheckBox>
+					</StackPanel>
+					<CheckBox MaxHeight="110"
+							  Margin="3"
+							  x:Name="sex"
+							  IsChecked="{Binding Model.Sex, Mode=TwoWay}"
+							  RelativePanel.Below="violence">
+						<Image Source="ms-appx:///Assets/Proxer/PSK/sex.png" />
+					</CheckBox>
+				</StackPanel>
+			</proxControls:Expander>
+			<proxControls:Expander Header="Sortierung"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="psk"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="sort">
+				<StackPanel Orientation="Vertical"
+							Margin="3">
+					<RadioButton Content="Relevanz"
+								 Margin="3"
+								 IsChecked="{Binding Model.Relevance, Mode=TwoWay}" />
+					<RadioButton Content="Name"
+								 Margin="3"
+								 IsChecked="{Binding Model.Name, Mode=TwoWay}" />
+					<RadioButton Content="Bewertungen"
+								 Margin="3"
+								 IsChecked="{Binding Model.Rating, Mode=TwoWay}" />
+					<RadioButton Content="Zugriffen"
+								 Margin="3"
+								 IsChecked="{Binding Model.Clicks, Mode=TwoWay}" />
+					<RadioButton Content="Anzahl der Episoden"
+								 Margin="3"
+								 IsChecked="{Binding Model.Count, Mode=TwoWay}" />
+				</StackPanel>
+			</proxControls:Expander>
+			<proxControls:Expander Header="Länge"
+								   ExpandDirection="Down"
+								   VerticalAlignment="Top"
+								   RelativePanel.Below="sort"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   HeaderBorderBrush="Transparent"
+								   Margin="3"
+								   x:Name="length">
+				<StackPanel Orientation="Vertical"
+							Margin="3">
+					<toolkit:NumericUpDown Margin="3"
+										   x:Name="value"
+										   Maximum="400"
+										   Minimum="0"
+										   SmallChange="1"
+										   LargeChange="5"
+										   ValueFormat="#"
+										   Value="{Binding Model.Episodes, Mode=TwoWay}"
+										   ValueBarVisibility="Collapsed" />
+					<RadioButton Content="Unterhalb"
+								 Margin="3"
+								 IsChecked="{Binding Model.Under, Mode=TwoWay}" />
+					<RadioButton Content="Oberhalb"
+								 Margin="3"
+								 IsChecked="{Binding Model.Over, Mode=TwoWay}" />
+				</StackPanel>
+			</proxControls:Expander>
+			<Button Content="Suche starten"
+					x:Name="searchStartBottom"
+					RelativePanel.Below="length"
+					RelativePanel.AlignHorizontalCenterWithPanel="True"
+					Command="{Binding StartSearch}" />
+		</RelativePanel>
+	</ScrollViewer>
+</UserControl>

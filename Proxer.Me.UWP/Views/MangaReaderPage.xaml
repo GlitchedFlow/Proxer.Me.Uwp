@@ -1,0 +1,163 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.MangaReaderPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  xmlns:template="using:Template10.Controls"
+	  xmlns:proxControls="using:Proxer.Me.Controls"
+	  xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+	  xmlns:userControls="using:Proxer.Me.UWP.UserControls"
+	  xmlns:converter="using:Proxer.Me.Controls.Converters"
+	  xmlns:i="using:Microsoft.Xaml.Interactivity"
+	  xmlns:b="using:Microsoft.Xaml.Interactions.Core"
+	  DataContext="{StaticResource MangaReaderViewModel}">
+
+	<Grid Background="{StaticResource ContentBackground}"
+		  x:Name="root">
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Mobile">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="endless_normal.Visibility"
+								Value="Collapsed" />
+						<Setter Target="endless_narrow.Visibility"
+								Value="Visible" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Default">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="400" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="endless_normal.Visibility"
+								Value="Visible" />
+						<Setter Target="endless_narrow.Visibility"
+								Value="Collapsed" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<template:PageHeader x:Name="header"
+							 EllipsisVisibility="Collapsed"
+							 Text="{Binding Model.PageTitle}">
+			<template:PageHeader.PrimaryCommands>
+				<AppBarButton Label="Parameter"
+							  x:Name="toggleParameter"
+							  Style="{StaticResource HamburgerButtonStyle}"
+							  Command="{Binding SwitchPaneState}"
+							  HorizontalContentAlignment="Center"
+							  VerticalContentAlignment="Center">
+					<AppBarButton.Content>
+						<FontIcon x:Name="ContentPresenter"
+								  FontSize="20"
+								  Glyph="&#xE700;" />
+					</AppBarButton.Content>
+				</AppBarButton>
+			</template:PageHeader.PrimaryCommands>
+		</template:PageHeader>
+
+		<SplitView Grid.Row="1"
+				   PanePlacement="Right"
+				   attached:SplitViewHelper.IsFullScreen="True"
+				   attached:SplitViewHelper.FullScreenMaxWidth="600"
+				   attached:SplitViewHelper.OpenPaneLength="350"
+				   IsPaneOpen="{Binding Model.IsPaneOpen, Mode=TwoWay}"
+				   DisplayMode="{Binding Model.PaneDisplayMode}"
+				   PaneBackground="{StaticResource Background}">
+			<SplitView.Pane>
+				<Border BorderBrush="{StaticResource ActiveBorderBrush}"
+						BorderThickness="1 0 0 0">
+					<userControls:InfoContentControl />
+				</Border>
+			</SplitView.Pane>
+			<SplitView.Content>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<WebView Source="{Binding Model.Url}"
+							 x:Name="webView"
+							 Visibility="{Binding Model.Images.Count, Converter={StaticResource InvertedIntToVisibilityConverter}}">
+						<i:Interaction.Behaviors>
+							<b:EventTriggerBehavior EventName="NavigationCompleted">
+								<b:InvokeCommandAction Command="{Binding NavgationCompleted}"
+													   CommandParameter="{Binding Mode=OneWay, ElementName=webView}" />
+							</b:EventTriggerBehavior>
+						</i:Interaction.Behaviors>
+					</WebView>
+					<FlipView ItemsSource="{Binding Model.Images}"
+							  Visibility="{Binding Model.SettingsModel.UseLongReader, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+						<FlipView.ItemTemplate>
+							<DataTemplate>
+								<ScrollViewer ZoomMode="Enabled">
+									<Image Source="{Binding }"
+										   Stretch="Uniform" />
+								</ScrollViewer>
+							</DataTemplate>
+						</FlipView.ItemTemplate>
+					</FlipView>
+					<ScrollViewer Visibility="{Binding Model.SettingsModel.UseLongReader, Converter={StaticResource BoolToVisibilityConverter}}"
+								  ZoomMode="Enabled">
+						<ItemsControl ItemsSource="{Binding Model.Images}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Vertical">
+									</StackPanel>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Image Source="{Binding }"
+										   Stretch="Uniform" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+					<CommandBar IsSticky="False"
+								Grid.Row="1"
+								x:Name="bottommenu"
+								Background="{StaticResource Background}"
+								BorderBrush="{StaticResource BorderBrush}">
+						<CommandBar.PrimaryCommands>
+							<AppBarButton Icon="Back"
+										  Label="Vorheriges Kapitel"
+										  Command="{Binding PreviousChapter}" />
+							<AppBarButton Icon="Forward"
+										  Label="Nächstes Kapitel"
+										  Command="{Binding NextChapter}" />
+							<AppBarButton Icon="Tag"
+										  Label="Notizen öffnen"
+										  Command="{Binding ShowNotes}" />
+							<AppBarButton Icon="PostUpdate"
+										  Label="Lesezeichen setzen"
+										  Command="{Binding SetReminder}" />
+							<AppBarToggleButton Icon="Document"
+												Label="Endless Reader"
+												x:Name="endless_normal"
+												IsChecked="{Binding Model.SettingsModel.UseLongReader, Mode=TwoWay}" />
+						</CommandBar.PrimaryCommands>
+						<CommandBar.SecondaryCommands>
+							<AppBarToggleButton Icon="Document"
+												Label="Endless Reader"
+												x:Name="endless_narrow"
+												IsChecked="{Binding Model.SettingsModel.UseLongReader, Mode=TwoWay}" />
+						</CommandBar.SecondaryCommands>
+					</CommandBar>
+				</Grid>
+			</SplitView.Content>
+		</SplitView>
+	</Grid>
+</Page>

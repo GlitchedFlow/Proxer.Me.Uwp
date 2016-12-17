@@ -1,0 +1,125 @@
+﻿<common:BootStrapper x:Class="Proxer.Me.UWP.App"
+					 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					 xmlns:local="using:Proxer.Me.UWP"
+					 xmlns:common="using:Template10.Common"
+					 xmlns:vm="using:Proxer.Me.UWP.ViewModels"
+					 xmlns:converter="using:Proxer.Me.Controls.Converters"
+					 xmlns:style="using:Proxer.Me.Resources"
+					 RequestedTheme="Dark">
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ms-appx:///Proxer.Me.Resources/Shared.xaml" />
+				<ResourceDictionary Source="ms-appx:///Proxer.Me.Resources/Styles/Generic.xaml" />
+				<ResourceDictionary Source="ms-appx:///Proxer.Me.Resources/Templates/Generic.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<style:StyleProvider x:Key="StyleProvider" />
+
+			<vm:ShellViewModel x:Key="ShellViewModel" />
+			<vm:OverviewViewModel x:Key="OverviewViewModel" />
+			<vm:LoginViewModel x:Key="LoginViewModel" />
+			<vm:NewsViewModel x:Key="NewsViewModel" />
+			<vm:WebViewModel x:Key="WebViewModel" />
+			<vm:SettingsViewModel x:Key="SettingsViewModel" />
+			<vm:SearchViewModel x:Key="SearchViewModel" />
+			<vm:EntryViewModel x:Key="EntryViewModel" />
+			<vm:MessengerViewModel x:Key="MessengerViewModel" />
+			<vm:UserControlPanelViewModel x:Key="UserControlPanelViewModel" />
+			<vm:ProfileViewModel x:Key="ProfileViewModel" />
+			<vm:AnimePlayerViewModel x:Key="AnimePlayerViewModel" />
+			<vm:MangaReaderViewModel x:Key="MangaReaderViewModel" />
+			<vm:NotificationsViewModel x:Key="NotificationsViewModel" />
+
+			<converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+			<converter:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+			<converter:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+			<converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
+			<converter:StringToColorConverter x:Key="StringToColorConverter" />
+			<converter:UnixTimeStampConverter x:Key="UnixTimeStampConverter" />
+			<converter:NewsToImageConverter x:Key="NewsToImageConverter" />
+			<converter:NewsToHeaderConverter x:Key="NewsToHeaderConverter" />
+			<converter:StringToAvatarConverter x:Key="StringToAvatarConverter" />
+			<converter:BoolToLoginConverter x:Key="BoolToLoginConverter" />
+			<converter:RandomHeaderToStringConverter x:Key="RandomHeaderToStringConverter" />
+			<converter:StateImageConverter x:Key="StateImageConverter" />
+			<converter:GermanLanguageConverter x:Key="GermanLanguageConverter" />
+			<converter:EnglishLanguageConverter x:Key="EnglishLanguageConverter" />
+			<converter:IsRatedConverter x:Key="IsRatedConverter" />
+			<converter:IsRecommendedConverter x:Key="IsRecommendedConverter" />
+			<converter:ProgressRatingConverter x:Key="ProgressRatingConverter" />
+			<converter:RatingConverter x:Key="RatingConverter" />
+			<converter:RatingStyleVisibilityConverter x:Key="RatingStyleVisibilityConverter" />
+			<converter:IDToImageConverter x:Key="IDToImageConverter" />
+			<converter:EntryGridItemExpanderDirectionConverter x:Key="EntryGridItemExpanderDirectionConverter" />
+			<converter:RatingToStarsConverter x:Key="RatingToStarsConverter" />
+			<converter:TypeNameConverter x:Key="TypeNameConverter" />
+			<converter:StringSplitConverter x:Key="StringSplitConverter" />
+			<converter:TagGroupConverter x:Key="TagGroupConverter" />
+			<converter:TagSpoilerNameConverter x:Key="TagSpoilerNameConverter" />
+			<converter:TagSpoilerVisibilityConverter x:Key="TagSpoilerVisibilityConverter" />
+			<converter:TagStateToGroupNameConverter x:Key="TagStateToGroupNameConverter" />
+			<converter:InvertedTagSpoilerVisibilityConverter x:Key="InvertedTagSpoilerVisibilityConverter" />
+			<converter:FSKToImageConverter x:Key="FSKToImageConverter" />
+			<converter:PeopleToGroupedPeopleConverter x:Key="PeopleToGroupedPeopleConverter" />
+			<converter:PeopleSortKeyToNameConverter x:Key="PeopleSortKeyToNameConverter" />
+			<converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+			<converter:CountryToImageConverter x:Key="CountryToImageConverter" />
+			<converter:FirstCharToUpperCastConverter x:Key="FirstCharToUpperCastConverter" />
+			<converter:StringToUpperStringConverter x:Key="StringToUpperStringConverter" />
+			<converter:StringToHosterImagesConverter x:Key="StringToHosterImagesConverter" />
+			<converter:InvertedIntToVisibilityConverter x:Key="InvertedIntToVisibilityConverter" />
+			<converter:IsAnimeConverter x:Key="IsAnimeConverter" />
+			<converter:UserRatingToStarsConverter x:Key="UserRatingToStarsConverter" />
+			<converter:CommentRatingDetailsConverter x:Key="CommentRatingDetailsConverter" />
+			<converter:RelationsToGroupedRelationsConverter x:Key="RelationsToGroupedRelationsConverter" />
+			<converter:PushCountToInfoConverter x:Key="PushCountToInfoConverter" />
+			<converter:UserListToGroupedListConverter x:Key="UserListToGroupedListConverter" />
+			<converter:MediumToStringConverter x:Key="MediumToStringConverter" />
+			<converter:VoteToGlyphConverter x:Key="VoteToGlyphConverter" />
+			<converter:ReminderFilteredConverter x:Key="ReminderFilteredConverter" />
+			<converter:StateToReminderColorConverter x:Key="StateToReminderColorConverter">
+				<converter:StateToReminderColorConverter.OnlineBrush>
+					<LinearGradientBrush EndPoint="1,0"
+										 StartPoint="0,0">
+						<GradientStop Color="White"
+									  Offset="0" />
+						<GradientStop Color="Green"
+									  Offset=".125" />
+						<GradientStop Color="Green"
+									  Offset=".875" />
+						<GradientStop Color="White"
+									  Offset="1" />
+					</LinearGradientBrush>
+				</converter:StateToReminderColorConverter.OnlineBrush>
+				<converter:StateToReminderColorConverter.OfflineBrush>
+					<LinearGradientBrush EndPoint="1,0"
+										 StartPoint="0,0">
+						<GradientStop Color="White"
+									  Offset="0" />
+						<GradientStop Color="Red"
+									  Offset=".125" />
+						<GradientStop Color="Red"
+									  Offset=".875" />
+						<GradientStop Color="White"
+									  Offset="1" />
+					</LinearGradientBrush>
+				</converter:StateToReminderColorConverter.OfflineBrush>
+			</converter:StateToReminderColorConverter>
+			<converter:LanguageToStringConverter x:Key="LanguageToStringConverter" />
+			<converter:EpisodeTitleConverter x:Key="EpisodeTitleConverter"
+											 Entry="{Binding Model.FullEntry, Source={StaticResource EntryViewModel}}" />
+			<converter:StateStringConverter x:Key="StateStringConverter"
+											IsAnime="{Binding Model.FullEntry.Category, Converter={StaticResource IsAnimeConverter}, Source={StaticResource EntryViewModel}}" />
+			<converter:TopTenFilteredConverter x:Key="TopTenFilteredConverter" />
+			<converter:LicenseToVisibilityConverter x:Key="LicenseToVisibilityConverter" />
+			<converter:ChatImageToImageSourceConverter x:Key="ChatImageToImageSourceConverter" />
+			<converter:ChatTimeStampConverter x:Key="ChatTimeStampConverter" />
+			<converter:IsContinousMessageConverter x:Key="IsContinousMessageConverter" />
+			<converter:MessageTimeStampConverter x:Key="MessageTimeStampConverter" />
+			<converter:TimeStampToTimeConverter x:Key="TimeStampToTimeConverter" />
+			<converter:ContentIconConverter x:Key="ContentIconConverter" />
+		</ResourceDictionary>
+	</Application.Resources>
+</common:BootStrapper>

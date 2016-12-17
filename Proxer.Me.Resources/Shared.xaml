@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:template="using:Template10.Controls">
+	<!-- Brushs -->
+	<SolidColorBrush x:Key="ContentBackground"
+					 Color="{Binding ContentBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ContentForeground"
+					 Color="{Binding ContentForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="Background"
+					 Color="{Binding Background.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="Foreground"
+					 Color="{Binding Foreground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="BorderBrush"
+					 Color="{Binding BorderBrush.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="Separator"
+					 Color="{Binding Separator.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ActiveBackground"
+					 Color="{Binding ActiveBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ActiveForeground"
+					 Color="{Binding ActiveForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ActiveBorderBrush"
+					 Color="{Binding ActiveBorderBrush.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="FocusedBackground"
+					 Color="{Binding FocusedBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="FocusedForeground"
+					 Color="{Binding FocusedForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="FocusedBorderBrush"
+					 Color="{Binding FocusedBorderBrush.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="HoverBackground"
+					 Color="{Binding HoverBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="HoverForeground"
+					 Color="{Binding HoverForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="HoverBorderBrush"
+					 Color="{Binding HoverBorderBrush.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ClickedBackground"
+					 Color="{Binding ClickedBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ClickedForeground"
+					 Color="{Binding ClickedForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="ClickedBorderBrush"
+					 Color="{Binding ClickedBorderBrush.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="DisabledBackground"
+					 Color="{Binding DisabledBackground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="DisabledForeground"
+					 Color="{Binding DisabledForeground.Color, Source={StaticResource StyleProvider}}" />
+	<SolidColorBrush x:Key="DisabledBorderBrush"
+					 Color="{Binding DisabledBorderBrush.Color, Source={StaticResource StyleProvider}}" />
+</ResourceDictionary>

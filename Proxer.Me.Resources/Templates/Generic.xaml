@@ -1,0 +1,2248 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Proxer.Me.Resources.Templates"
+					xmlns:entryList="using:Proxer.Me.Support.Api.Data.List"
+					xmlns:info="using:Proxer.Me.Support.Api.Data.Info"
+					xmlns:controls="using:Proxer.Me.Controls"
+					xmlns:attached="using:Proxer.Me.Controls.AttachedProperties"
+					xmlns:converter="using:Proxer.Me.Controls.Converters">
+
+	<Style x:Key="EmptyContentControlStyle"
+		   TargetType="ContentControl">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ContentControl" />
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<DataTemplate x:Key="NewsListItem">
+		<Grid x:Name="grid"
+			  Margin="0,0,0,10"
+			  HorizontalAlignment="Stretch">
+			<Grid.Background>
+				<LinearGradientBrush EndPoint="0.5,1"
+									 StartPoint="0.5,0">
+					<GradientStop Color="{Binding Color, Source={StaticResource ActiveBorderBrush}}"
+								  Offset="0" />
+					<GradientStop Color="#00000000"
+								  Offset="0.15" />
+					<GradientStop Color="#00000000"
+								  Offset="1" />
+				</LinearGradientBrush>
+			</Grid.Background>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Image Height="150"
+				   Width="150"
+				   Grid.Row="0"
+				   Source="{Binding Mode=OneWay, Converter={StaticResource NewsToImageConverter}}"
+				   Stretch="UniformToFill"
+				   HorizontalAlignment="Center"
+				   VerticalAlignment="Top"
+				   Visibility="{Binding DataContext.Model.SettingsModel.ShowNewsImages, ElementName=rootPanel, Converter={StaticResource BoolToVisibilityConverter}}" />
+			<RelativePanel Grid.Column="1"
+						   Margin="10,0">
+				<TextBlock x:Name="DateAutorHolder"
+						   Text="{Binding Mode=OneWay, Converter={StaticResource NewsToHeaderConverter}}"
+						   FontSize="10"
+						   TextWrapping="Wrap"
+						   RelativePanel.AlignLeftWithPanel="True" />
+				<TextBlock Text="{Binding Subject}"
+						   x:Name="SubjectHeaderText"
+						   HorizontalAlignment="Left"
+						   VerticalAlignment="Center"
+						   FontSize="16"
+						   TextWrapping="Wrap"
+						   TextTrimming="CharacterEllipsis"
+						   FontWeight="Bold"
+						   RelativePanel.Below="DateAutorHolder" />
+				<StackPanel x:Name="DescriptionHolder"
+							RelativePanel.Below="SubjectHeaderText"
+							RelativePanel.AlignLeftWithPanel="True"
+							RelativePanel.AlignRightWithPanel="True">
+					<TextBlock Text="{Binding CatName}"
+							   FontSize="12"
+							   FontWeight="Thin"
+							   Foreground="{StaticResource ActiveBorderBrush}" />
+					<TextBlock Text="{Binding Description}"
+							   HorizontalAlignment="Stretch"
+							   FontSize="14"
+							   FontWeight="Light"
+							   TextWrapping="Wrap"
+							   TextTrimming="CharacterEllipsis" />
+				</StackPanel>
+			</RelativePanel>
+		</Grid>
+	</DataTemplate>
+	<DataTemplate x:Key="EntryListItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="EntryList">
+						<VisualState x:Name="EntryListNarrowMobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="medium.(RelativePanel.AlignRightWith)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="german.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="german.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="english.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignRightWithPanel)"
+										Value="true" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="genre.Visibility"
+										Value="Collapsed" />
+								<Setter Target="genreSeparator.Visibility"
+										Value="Collapsed" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="EntryListNarrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="450" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignRightWith)"
+										Value="ratingBlock" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="ratingBlock" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="genre.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="genre.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="genre.(RelativePanel.Below)"
+										Value="genreSeparator" />
+								<Setter Target="genre.(RelativePanel.AlignLeftWithPanel)"
+										Value="true" />
+								<Setter Target="genre.Visibility"
+										Value="Visible" />
+								<Setter Target="genreSeparator.Visibility"
+										Value="Visible" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="EntryListSmall">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="650" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="ratingBlock" />
+								<Setter Target="medium.(RelativePanel.AlignLeftWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="genre.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="genre.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="genre.(RelativePanel.Below)"
+										Value="genreSeparator" />
+								<Setter Target="genre.(RelativePanel.AlignLeftWithPanel)"
+										Value="true" />
+								<Setter Target="genreSeparator.Visibility"
+										Value="Visible" />
+								<Setter Target="genre.Visibility"
+										Value="Visible" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="EntryListDefault">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1300" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="ratingBlock" />
+								<Setter Target="medium.(RelativePanel.AlignLeftWithPanel)"
+										Value="false" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="genre.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="genre.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="true" />
+								<Setter Target="genre.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="genre.(RelativePanel.AlignLeftWithPanel)"
+										Value="false" />
+								<Setter Target="genreSeparator.Visibility"
+										Value="Collapsed" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<Rectangle RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   Height="1"
+							   Fill="{StaticResource ActiveBorderBrush}"
+							   x:Name="topSeparator" />
+					<Image Source="{Binding State, Converter={StaticResource StateImageConverter}}"
+						   Height="16"
+						   Width="16"
+						   x:Name="stateImage"
+						   RelativePanel.AlignVerticalCenterWithPanel="True"
+						   Margin="3" />
+					<TextBlock Text="{Binding Name}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="stateImage"
+							   Margin="3"
+							   MaxWidth="300"
+							   TextWrapping="Wrap"
+							   x:Name="title" />
+					<Image Height="16"
+						   Width="16"
+						   Source="ms-appx:///Assets/Proxer/Flags/german.gif"
+						   x:Name="german"
+						   Margin="3"
+						   Visibility="{Binding Language, Converter={StaticResource GermanLanguageConverter}}"
+						   RelativePanel.RightOf="title"
+						   RelativePanel.AlignVerticalCenterWith="title" />
+					<Image Height="16"
+						   Width="16"
+						   Source="ms-appx:///Assets/Proxer/Flags/english.gif"
+						   x:Name="english"
+						   Margin="3"
+						   Visibility="{Binding Language, Converter={StaticResource EnglishLanguageConverter}}"
+						   RelativePanel.RightOf="german"
+						   RelativePanel.AlignVerticalCenterWith="title" />
+					<Rectangle RelativePanel.AlignLeftWith="stateImage"
+							   RelativePanel.AlignRightWith="english"
+							   RelativePanel.Below="title"
+							   Height="1"
+							   Fill="{StaticResource ActiveBorderBrush}"
+							   x:Name="genreSeparator"
+							   Visibility="Collapsed" />
+					<TextBlock Text="{Binding Genre}"
+							   Margin="3"
+							   TextWrapping="WrapWholeWords"
+							   x:Name="genre"
+							   Width="300"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.AlignHorizontalCenterWithPanel="True" />
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+							   Margin="3"
+							   x:Name="medium"
+							   RelativePanel.LeftOf="ratingBlock"
+							   RelativePanel.AlignVerticalCenterWithPanel="True" />
+					<RelativePanel x:Name="ratingBlock"
+								   RelativePanel.AlignVerticalCenterWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True">
+						<Grid x:Name="rating"
+							  MinWidth="75"
+							  RelativePanel.AlignVerticalCenterWithPanel="True"
+							  RelativePanel.AlignRightWithPanel="True"
+							  Visibility="{Binding RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=true}">
+							<Grid Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=0}">
+								<ProgressBar x:Name="ratingProgress"
+											 Width="75"
+											 Height="25"
+											 Margin="5"
+											 VerticalAlignment="Center"
+											 VerticalContentAlignment="Center"
+											 FlowDirection="RightToLeft"
+											 Foreground="{StaticResource ContentBackground}"
+											 Value="{Binding Mode=OneWay, Converter={StaticResource ProgressRatingConverter}}">
+									<ProgressBar.Background>
+										<LinearGradientBrush>
+											<GradientStop Offset="0"
+														  Color="{Binding DataContext.Model.SettingsModel.HighHeatColor.Color, ElementName=root}" />
+											<GradientStop Offset=".5"
+														  Color="{Binding DataContext.Model.SettingsModel.MiddleHeatColor.Color, ElementName=root}" />
+											<GradientStop Offset="1"
+														  Color="{Binding DataContext.Model.SettingsModel.LowHeatColor.Color, ElementName=root}" />
+										</LinearGradientBrush>
+									</ProgressBar.Background>
+								</ProgressBar>
+							</Grid>
+							<Grid Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=1}">
+								<TextBlock x:Name="recomandation_list_plus"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   Text="&#xE8E1;"
+										   MinWidth="75"
+										   Margin="5"
+										   TextAlignment="Center"
+										   Visibility="{Binding Mode=OneWay, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=true}"
+										   FontFamily="Segoe MDL2 Assets">
+								</TextBlock>
+								<TextBlock x:Name="recomandation_list_minus"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   Text="&#xE8E0;"
+										   MinWidth="75"
+										   Margin="5"
+										   TextAlignment="Center"
+										   Visibility="{Binding Mode=OneTime, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=false}"
+										   FontFamily="Segoe MDL2 Assets">
+								</TextBlock>
+							</Grid>
+							<Grid VerticalAlignment="Center"
+								  HorizontalAlignment="Center"
+								  Margin="5"
+								  Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=2}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   FontFamily="Segoe MDL2 Assets"
+										   Text="&#xE00A;"
+										   Margin="1" />
+								<TextBlock x:Name="rating_list"
+										   Text="{Binding Mode=OneWay, Converter={StaticResource RatingConverter}}"
+										   TextAlignment="Center"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Center"
+										   Grid.Column="1"
+										   Margin="1" />
+							</Grid>
+						</Grid>
+						<TextBlock x:Name="notRate_list"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center"
+								   Text="Unrated"
+								   MinWidth="75"
+								   Margin="5"
+								   TextAlignment="Center"
+								   Visibility="{Binding RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=false}"
+								   RelativePanel.AlignVerticalCenterWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True" />
+						<Rectangle x:Name="filler"
+								   MinWidth="75" />
+					</RelativePanel>
+				</RelativePanel>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+	<DataTemplate x:Key="EntryGridItem">
+		<UserControl>
+			<Grid BorderBrush="{StaticResource BorderBrush}"
+				  BorderThickness="1">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="EntryGrid">
+						<VisualState x:Name="EntryGridNarrowMobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="135" />
+								<Setter Target="cover.Height"
+										Value="172" />
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="genre.Visibility"
+										Value="Collapsed" />
+								<Setter Target="separator.(RelativePanel.Below)"
+										Value="medium" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignRightWithPanel)"
+										Value="false" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="stateImage" />
+								<Setter Target="medium.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="ratingBlock" />
+								<Setter Target="title.Width"
+										Value="95" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="EntryGridNarrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="190" />
+								<Setter Target="cover.Height"
+										Value="243" />
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="genre.Visibility"
+										Value="Visible" />
+								<Setter Target="separator.(RelativePanel.Below)"
+										Value="medium" />
+								<Setter Target="genre.(RelativePanel.Below)"
+										Value="medium" />
+								<Setter Target="genre.Width"
+										Value="160" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignRightWithPanel)"
+										Value="true" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="stateImage" />
+								<Setter Target="title.Width"
+										Value="140" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="EntryGridDefault">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1200" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="250" />
+								<Setter Target="cover.Height"
+										Value="320" />
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="genre.Visibility"
+										Value="Visible" />
+								<Setter Target="separator.(RelativePanel.Below)"
+										Value="ratingBlock" />
+								<Setter Target="genre.(RelativePanel.Below)"
+										Value="separator" />
+								<Setter Target="genre.Width"
+										Value="220" />
+								<Setter Target="ratingBlock.(RelativePanel.AlignRightWithPanel)"
+										Value="true" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.RightOf)"
+										Value="english" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="ratingBlock" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="title.Width"
+										Value="200" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Image Source="{Binding ID, Converter={StaticResource IDToImageConverter}}"
+					   Width="250"
+					   Height="320"
+					   Stretch="Fill"
+					   x:Name="cover" />
+				<controls:Expander VerticalAlignment="{Binding DataContext.Model.SettingsModel.GridExpanderPosition, ElementName=root}"
+								   ExpandDirection="{Binding DataContext.Model.SettingsModel.GridExpanderUp, ElementName=root, Converter={StaticResource EntryGridItemExpanderDirectionConverter}}"
+								   BorderThickness="0"
+								   HeaderBorderThickness="0"
+								   ContentLineVisibility="Collapsed"
+								   IsExpanded="{Binding DataContext.Model.SettingsModel.GridItemsOpen, ElementName=root}">
+					<controls:Expander.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".85" />
+					</controls:Expander.Background>
+					<controls:Expander.Header>
+						<TextBlock Text="{Binding Name}"
+								   TextWrapping="WrapWholeWords"
+								   x:Name="title"
+								   Width="200" />
+					</controls:Expander.Header>
+					<RelativePanel>
+						<Image Source="{Binding State, Converter={StaticResource StateImageConverter}}"
+							   Height="16"
+							   Width="16"
+							   x:Name="stateImage"
+							   Margin="2"
+							   RelativePanel.AlignVerticalCenterWith="ratingBlock" />
+						<Image Height="16"
+							   Width="16"
+							   Source="ms-appx:///Assets/Proxer/Flags/german.gif"
+							   x:Name="german"
+							   Margin="2"
+							   Visibility="{Binding Language, Converter={StaticResource GermanLanguageConverter}}"
+							   RelativePanel.RightOf="stateImage"
+							   RelativePanel.AlignVerticalCenterWith="ratingBlock" />
+						<Image Height="16"
+							   Width="16"
+							   Source="ms-appx:///Assets/Proxer/Flags/english.gif"
+							   x:Name="english"
+							   Margin="2"
+							   Visibility="{Binding Language, Converter={StaticResource EnglishLanguageConverter}}"
+							   RelativePanel.RightOf="german"
+							   RelativePanel.AlignVerticalCenterWith="ratingBlock" />
+						<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+								   Margin="2"
+								   x:Name="medium"
+								   RelativePanel.RightOf="english"
+								   RelativePanel.AlignVerticalCenterWith="ratingBlock" />
+						<RelativePanel x:Name="ratingBlock"
+									   RelativePanel.AlignRightWithPanel="True">
+							<Grid x:Name="rating"
+								  MinWidth="75"
+								  RelativePanel.AlignVerticalCenterWithPanel="True"
+								  RelativePanel.AlignRightWithPanel="True"
+								  Visibility="{Binding RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=true}">
+								<Grid Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=0}">
+									<ProgressBar x:Name="ratingProgress"
+												 Width="75"
+												 Height="25"
+												 Margin="5"
+												 VerticalAlignment="Center"
+												 VerticalContentAlignment="Center"
+												 FlowDirection="RightToLeft"
+												 Foreground="{StaticResource ContentBackground}"
+												 Value="{Binding Mode=OneWay, Converter={StaticResource ProgressRatingConverter}}">
+										<ProgressBar.Background>
+											<LinearGradientBrush>
+												<GradientStop Offset="0"
+															  Color="{Binding DataContext.Model.SettingsModel.HighHeatColor.Color, ElementName=root}" />
+												<GradientStop Offset=".5"
+															  Color="{Binding DataContext.Model.SettingsModel.MiddleHeatColor.Color, ElementName=root}" />
+												<GradientStop Offset="1"
+															  Color="{Binding DataContext.Model.SettingsModel.LowHeatColor.Color, ElementName=root}" />
+											</LinearGradientBrush>
+										</ProgressBar.Background>
+									</ProgressBar>
+								</Grid>
+								<Grid Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=1}">
+									<TextBlock x:Name="recomandation_list_plus"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Text="&#xE8E1;"
+											   MinWidth="75"
+											   Margin="5"
+											   TextAlignment="Center"
+											   Visibility="{Binding Mode=OneWay, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=true}"
+											   FontFamily="Segoe MDL2 Assets">
+									</TextBlock>
+									<TextBlock x:Name="recomandation_list_minus"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Text="&#xE8E0;"
+											   MinWidth="75"
+											   Margin="5"
+											   TextAlignment="Center"
+											   Visibility="{Binding Mode=OneTime, Converter={StaticResource IsRecommendedConverter}, ConverterParameter=false}"
+											   FontFamily="Segoe MDL2 Assets">
+									</TextBlock>
+								</Grid>
+								<Grid VerticalAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Margin="5"
+									  Visibility="{Binding DataContext.Model.SettingsModel.RatingStyle, ElementName=root, Converter={StaticResource RatingStyleVisibilityConverter}, ConverterParameter=2}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+									<TextBlock VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   FontFamily="Segoe MDL2 Assets"
+											   Text="&#xE00A;"
+											   Margin="1" />
+									<TextBlock x:Name="rating_list"
+											   Text="{Binding Mode=OneWay, Converter={StaticResource RatingConverter}}"
+											   TextAlignment="Center"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"
+											   Grid.Column="1"
+											   Margin="1" />
+								</Grid>
+							</Grid>
+							<TextBlock x:Name="notRate_list"
+									   VerticalAlignment="Center"
+									   HorizontalAlignment="Center"
+									   Text="Unrated"
+									   MinWidth="75"
+									   Margin="5"
+									   TextAlignment="Center"
+									   Visibility="{Binding RateCount, Converter={StaticResource IsRatedConverter}, ConverterParameter=false}"
+									   RelativePanel.AlignVerticalCenterWithPanel="True"
+									   RelativePanel.AlignRightWithPanel="True" />
+							<Rectangle x:Name="filler"
+									   MinWidth="75" />
+						</RelativePanel>
+						<Rectangle Fill="{StaticResource ActiveBorderBrush}"
+								   Height="1"
+								   x:Name="separator"
+								   RelativePanel.Below="ratingBlock"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True" />
+						<TextBlock Text="{Binding Genre}"
+								   Margin="3"
+								   TextWrapping="WrapWholeWords"
+								   x:Name="genre"
+								   Width="220"
+								   RelativePanel.Below="separator" />
+					</RelativePanel>
+				</controls:Expander>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+	<DataTemplate x:Key="UserListItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="UserList">
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="medium" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="progress.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="progress.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="starControl.(RelativePanel.AlignLeftWithPanel)"
+										Value="False" />
+								<Setter Target="starControl.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="starControl.HorizontalAlignment"
+										Value="Center" />
+								<Setter Target="starControl.HorizontalContentAlignment"
+										Value="Center" />
+								<Setter Target="notRate_list.(RelativePanel.AlignLeftWithPanel)"
+										Value="False" />
+								<Setter Target="notRate_list.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="True" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1000" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="ratingBlock.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="ratingBlock.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.LeftOf)"
+										Value="progress" />
+								<Setter Target="progress.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="progress.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="stateImage.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="starControl.(RelativePanel.AlignLeftWithPanel)"
+										Value="True" />
+								<Setter Target="starControl.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="starControl.HorizontalAlignment"
+										Value="Left" />
+								<Setter Target="starControl.HorizontalContentAlignment"
+										Value="Left" />
+								<Setter Target="notRate_list.(RelativePanel.AlignLeftWithPanel)"
+										Value="True" />
+								<Setter Target="notRate_list.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="False" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<Rectangle RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   Height="1"
+							   Fill="{StaticResource ActiveBorderBrush}"
+							   x:Name="topSeparator" />
+					<Image Source="{Binding EState, Converter={StaticResource StateImageConverter}}"
+						   Height="16"
+						   Width="16"
+						   x:Name="stateImage"
+						   RelativePanel.AlignVerticalCenterWithPanel="True"
+						   Margin="3" />
+					<TextBlock Text="{Binding Name}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="stateImage"
+							   Margin="3"
+							   MaxWidth="300"
+							   TextWrapping="Wrap"
+							   x:Name="title" />
+					<RelativePanel x:Name="ratingBlock"
+								   RelativePanel.AlignVerticalCenterWithPanel="True"
+								   RelativePanel.AlignHorizontalCenterWithPanel="True"
+								   MinWidth="150">
+						<ItemsControl ItemsSource="{Binding Rating, Converter={StaticResource UserRatingToStarsConverter}}"
+									  HorizontalAlignment="Left"
+									  HorizontalContentAlignment="Left"
+									  RelativePanel.AlignLeftWithPanel="True"
+									  VerticalAlignment="Center"
+									  x:Name="starControl"
+									  Margin="5"
+									  VerticalContentAlignment="Center"
+									  Visibility="{Binding Rating, Converter={StaticResource IntToVisibilityConverter}}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="&#xE00A;"
+											   FontFamily="Segoe MDL2 Assets"
+											   VerticalAlignment="Center"
+											   Opacity="{Binding }" />
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Orientation="Horizontal">
+									</StackPanel>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
+						<TextBlock x:Name="notRate_list"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center"
+								   Text="-"
+								   Margin="5"
+								   TextAlignment="Center"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   Visibility="{Binding Rating, Converter={StaticResource InvertedIntToVisibilityConverter}}"
+								   RelativePanel.AlignVerticalCenterWithPanel="True" />
+					</RelativePanel>
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+							   Margin="10 3 3 3"
+							   x:Name="medium"
+							   RelativePanel.LeftOf="progress"
+							   RelativePanel.AlignVerticalCenterWithPanel="True" />
+					<ProgressBar Foreground="Green"
+								 Background="Red"
+								 Value="{Binding Episode, Mode=TwoWay}"
+								 Maximum="{Binding Count}"
+								 RelativePanel.AlignRightWithPanel="True"
+								 RelativePanel.AlignVerticalCenterWithPanel="True"
+								 Margin="3 3 10 3"
+								 x:Name="progress"
+								 Width="100"
+								 Height="20" />
+				</RelativePanel>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="ReminderItem">
+		<UserControl HorizontalAlignment="Center"
+					 HorizontalContentAlignment="Center"
+					 VerticalAlignment="Center"
+					 VerticalContentAlignment="Center">
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="type.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="type.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="type.Width"
+										Value="65" />
+								<Setter Target="episode.(RelativePanel.RightOf)"
+										Value="medium" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="episode.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="state.(RelativePanel.RightOf)"
+										Value="title" />
+								<Setter Target="state.Width"
+										Value="16" />
+								<Setter Target="state.Height"
+										Value="16" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="750" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="type.(RelativePanel.RightOf)"
+										Value="episode" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="type.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="type.Width"
+										Value="100" />
+								<Setter Target="episode.(RelativePanel.RightOf)"
+										Value="title" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="episode.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="state.(RelativePanel.RightOf)"
+										Value="medium" />
+								<Setter Target="state.Width"
+										Value="20" />
+								<Setter Target="state.Height"
+										Value="20" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<Rectangle Fill="{StaticResource ActiveBorderBrush}"
+							   Height="1"
+							   RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   x:Name="separator" />
+					<TextBlock Text="{Binding Name}"
+							   Margin="3"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   Width="200"
+							   TextWrapping="WrapWholeWords"
+							   x:Name="title" />
+					<TextBlock Text="{Binding Number}"
+							   RelativePanel.RightOf="title"
+							   Margin="3"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   Width="30"
+							   TextWrapping="WrapWholeWords"
+							   x:Name="episode" />
+					<TextBlock Text="{Binding Language, Converter={StaticResource LanguageToStringConverter}}"
+							   RelativePanel.RightOf="episode"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   Margin="3"
+							   Width="100"
+							   x:Name="type" />
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+							   RelativePanel.RightOf="type"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   Margin="3"
+							   Width="100"
+							   x:Name="medium" />
+					<Ellipse Width="20"
+							 Height="20"
+							 Fill="{Binding State , Converter={StaticResource StateToReminderColorConverter}}"
+							 RelativePanel.AlignVerticalCenterWithPanel="True"
+							 RelativePanel.RightOf="medium"
+							 Margin="3"
+							 x:Name="state" />
+					<Button FontFamily="Segoe MDL2 Assets"
+							Content="&#xE10A;"
+							Background="Transparent"
+							BorderBrush="Transparent"
+							RelativePanel.RightOf="state"
+							Margin="3"
+							x:Name="delete"
+							Command="{Binding DeleteReminder, Source={StaticResource UserControlPanelViewModel}}"
+							CommandParameter="{Binding ID}"
+							RelativePanel.AlignVerticalCenterWithPanel="True" />
+				</RelativePanel>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="VoteItem">
+		<controls:Expander HeaderContentHorizontalAlignment="Stretch"
+						   HeaderContentVerticalAlignment="Stretch"
+						   ExpanderButtonVisibility="Collapsed"
+						   HeaderBorderBrush="Transparent">
+			<controls:Expander.Header>
+				<Grid HorizontalAlignment="Stretch"
+					  VerticalAlignment="Stretch">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<TextBlock>
+											<Run Text="Autor: "
+												 FontWeight="Bold" />
+											<Run Text="{Binding Username}" />
+					</TextBlock>
+					<TextBlock Grid.Row="1">
+											<Run Text="Entry: "
+												 FontWeight="Bold" />
+											<Run Text="{Binding Name}" />
+					</TextBlock>
+					<TextBlock Grid.Row="2"
+							   VerticalAlignment="Center"
+							   Visibility="{Binding Type, Converter={StaticResource VoteToGlyphConverter}, ConverterParameter=true}">
+											<Run Text="Vote: "
+												 FontWeight="Bold" />
+											<Run Text="&#xE19F;"
+												 FontFamily="Segoe MDL2 Assets" />
+					</TextBlock>
+					<TextBlock Grid.Row="2"
+							   VerticalAlignment="Center"
+							   Visibility="{Binding Type, Converter={StaticResource VoteToGlyphConverter}, ConverterParameter=false}">
+											<Run Text="Vote: "
+												 FontWeight="Bold" />
+											<Run Text="&#xE19E;"
+												 FontFamily="Segoe MDL2 Assets" />
+					</TextBlock>
+
+					<Button HorizontalAlignment="Right"
+							Grid.RowSpan="3"
+							FontFamily="Segoe MDL2 Assets"
+							Content="&#xE10A;"
+							Background="Transparent"
+							BorderBrush="Transparent"
+							VerticalAlignment="Center"
+							Command="{Binding DeleteVote, Source={StaticResource UserControlPanelViewModel}}"
+							CommandParameter="{Binding ID}" />
+				</Grid>
+			</controls:Expander.Header>
+			<RichTextBlock attached:RichTextBlockBbCode.BbCode="{Binding Comment}"
+						   x:Name="content"
+						   Margin="4" />
+		</controls:Expander>
+	</DataTemplate>
+
+	<DataTemplate x:Key="HistoryItem">
+		<UserControl>
+			<Grid HorizontalAlignment="Center">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="title.Width"
+										Value="200" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="episode.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+								<Setter Target="episode.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWith)"
+										Value="content" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="type.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWith)"
+										Value="content" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="content" />
+								<Setter Target="timestamp.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="timestamp.(RelativePanel.AlignRightWithPanel)"
+										Value="True" />
+								<Setter Target="timestamp.(RelativePanel.RightOf)"
+										Value="title" />
+								<Setter Target="content.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="content.(RelativePanel.AlignRightWithPanel)"
+										Value="True" />
+								<Setter Target="content.(RelativePanel.Below)"
+										Value="timestamp" />
+								<Setter Target="content.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="860" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="title.Width"
+										Value="300" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="episode.(RelativePanel.RightOf)"
+										Value="title" />
+								<Setter Target="episode.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="episode.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="type.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="type.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="timestamp.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="timestamp.(RelativePanel.AlignRightWithPanel)"
+										Value="False" />
+								<Setter Target="timestamp.(RelativePanel.RightOf)"
+										Value="medium" />
+								<Setter Target="content.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="content.(RelativePanel.AlignRightWithPanel)"
+										Value="False" />
+								<Setter Target="content.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="content.(RelativePanel.RightOf)"
+										Value="timestamp" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<Rectangle Fill="{StaticResource ActiveBorderBrush}"
+							   Height="1"
+							   RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True" />
+					<TextBlock Text="{Binding Name}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   x:Name="title"
+							   Width="275"
+							   Margin="3"
+							   TextWrapping="WrapWholeWords" />
+					<TextBlock Text="{Binding Number}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="title"
+							   x:Name="episode"
+							   Margin="3"
+							   Width="35" />
+					<TextBlock Text="{Binding Language, Converter={StaticResource LanguageToStringConverter}}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="episode"
+							   x:Name="type"
+							   Margin="3"
+							   Width="55" />
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="type"
+							   Margin="3"
+							   Width="85"
+							   x:Name="medium" />
+					<TextBlock Text="{Binding TimeStamp}"
+							   RelativePanel.AlignVerticalCenterWithPanel="True"
+							   RelativePanel.RightOf="medium"
+							   TextWrapping="WrapWholeWords"
+							   HorizontalAlignment="Right"
+							   TextAlignment="Right"
+							   Width="100"
+							   Margin="3"
+							   x:Name="timestamp" />
+					<Button Content="Zum Content"
+							RelativePanel.AlignVerticalCenterWithPanel="True"
+							RelativePanel.RightOf="timestamp"
+							Margin="3"
+							x:Name="content" />
+				</RelativePanel>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="ContentItem">
+		<controls:Expander Header="{Binding Title}"
+						   IsExpanded="{Binding IsExpanded, Mode=TwoWay}"
+						   BorderBrush="Transparent"
+						   HeaderBorderBrush="Transparent"
+						   Margin="3">
+			<Hub attached:HubHelper.ItemsSource="{Binding Content}"
+				 attached:HubHelper.SelectionTemplate="{StaticResource ContentLanguageItem}" />
+		</controls:Expander>
+	</DataTemplate>
+
+	<DataTemplate x:Key="ContentLanguageItem">
+		<Grid Background="{StaticResource ContentBackground}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<TextBlock Text="{Binding Key, Converter={StaticResource StringToUpperStringConverter}}"
+					   HorizontalAlignment="Center" />
+			<ItemsControl Grid.Row="1"
+						  ItemsSource="{Binding }"
+						  HorizontalAlignment="Center"
+						  HorizontalContentAlignment="Center"
+						  Margin="0 5"
+						  ItemTemplate="{StaticResource EpisodeChapterItem}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Vertical" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+			</ItemsControl>
+		</Grid>
+	</DataTemplate>
+
+	<DataTemplate x:Key="EpisodeChapterItem">
+		<UserControl Margin="2"
+					 x:Name="base">
+			<RelativePanel>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="LayoutStates">
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="number.Margin"
+										Value="2 0 0 0" />
+								<Setter Target="number.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="number.(RelativePanel.AlignTopWithPanel)"
+										Value="True" />
+								<Setter Target="isWatched.Margin"
+										Value="2 0 0 0" />
+								<Setter Target="isWatched.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="isWatched.(RelativePanel.AlignVerticalCenterWith)"
+										Value="number" />
+								<Setter Target="title.Margin"
+										Value="2 0 0 0" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="title.(RelativePanel.AlignTopWithPanel)"
+										Value="True" />
+								<Setter Target="hosters.Margin"
+										Value="2 0 0 0" />
+								<Setter Target="hosters.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="hosters.(RelativePanel.Below)"
+										Value="title" />
+								<Setter Target="hosters.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="hosters.(RelativePanel.AlignRightWithPanel)"
+										Value="False" />
+								<Setter Target="hosters.(RelativePanel.RightOf)"
+										Value="{x:Null}" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="number.Margin"
+										Value="5 0" />
+								<Setter Target="number.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="number.(RelativePanel.AlignTopWithPanel)"
+										Value="False" />
+								<Setter Target="isWatched.Margin"
+										Value="5 0" />
+								<Setter Target="isWatched.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="isWatched.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="title.Margin"
+										Value="5 0" />
+								<Setter Target="title.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="title.(RelativePanel.AlignTopWithPanel)"
+										Value="False" />
+								<Setter Target="hosters.Margin"
+										Value="5 0" />
+								<Setter Target="hosters.(RelativePanel.AlignVerticalCenterWithPanel)"
+										Value="True" />
+								<Setter Target="hosters.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="hosters.(RelativePanel.AlignHorizontalCenterWithPanel)"
+										Value="False" />
+								<Setter Target="hosters.(RelativePanel.AlignRightWithPanel)"
+										Value="True" />
+								<Setter Target="hosters.(RelativePanel.RightOf)"
+										Value="title" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel.Resources>
+					<converter:EntryUserStateToVisibilityConverter x:Key="EntryUserStateToVisibilityConverter"
+																   Number="{Binding Number}" />
+				</RelativePanel.Resources>
+				<Rectangle Fill="{StaticResource ActiveBorderBrush}"
+						   RelativePanel.AlignLeftWithPanel="True"
+						   RelativePanel.AlignRightWithPanel="True"
+						   Height="1" />
+				<TextBlock Text="{Binding Number}"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"
+						   TextAlignment="Center"
+						   Width="35"
+						   RelativePanel.AlignVerticalCenterWithPanel="True"
+						   Margin="5 0"
+						   x:Name="number" />
+				<Grid x:Name="isWatched"
+					  Width="30"
+					  RelativePanel.RightOf="number"
+					  RelativePanel.AlignVerticalCenterWithPanel="True"
+					  Margin="5 0"
+					  VerticalAlignment="Center"
+					  HorizontalAlignment="Center">
+					<TextBlock FontFamily="Segoe MDL2 Assets"
+							   Text="&#xE081;"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Center"
+							   TextAlignment="Center"
+							   Visibility="{Binding DataContext.Model.State, ElementName=root, Converter={StaticResource EntryUserStateToVisibilityConverter}}" />
+				</Grid>
+				<TextBlock Text="{Binding Mode=OneWay, Converter={StaticResource EpisodeTitleConverter}}"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"
+						   TextAlignment="Left"
+						   RelativePanel.RightOf="isWatched"
+						   x:Name="title"
+						   RelativePanel.AlignVerticalCenterWithPanel="True"
+						   Margin="5 0"
+						   Width="200"
+						   TextWrapping="Wrap" />
+				<Button Background="Transparent"
+						BorderBrush="Transparent"
+						Padding="0"
+						Command="{Binding OpenContent, Source={StaticResource EntryViewModel}}"
+						CommandParameter="{Binding Mode=OneWay}"
+						Margin="5 0"
+						RelativePanel.RightOf="title"
+						x:Name="hosters"
+						RelativePanel.AlignVerticalCenterWithPanel="True"
+						VerticalAlignment="Center"
+						VerticalContentAlignment="Center">
+					<Image Source="{Binding Mode=OneWay, Converter={StaticResource ContentIconConverter}}"
+						   Stretch="Fill"
+						   Height="20"
+						   Width="20" />
+				</Button>
+			</RelativePanel>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="EntryCommentItem">
+		<UserControl>
+			<controls:Expander Header="{Binding Username}"
+							   Margin="5"
+							   HeaderBorderBrush="Transparent">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="LayoutStates">
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="avatar.MaxHeight"
+										Value="150" />
+								<Setter Target="avatar.MaxWidth"
+										Value="112" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="avatar.MaxHeight"
+										Value="200" />
+								<Setter Target="avatar.MaxWidth"
+										Value="150" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<RichTextBlock attached:RichTextBlockBbCode.BbCode="{Binding Content}"
+								   x:Name="content"
+								   Margin="4" />
+					<Rectangle Fill="{StaticResource BorderBrush}"
+							   Height="1"
+							   RelativePanel.Below="content"
+							   RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   x:Name="separator"
+							   Margin="4" />
+					<Border VerticalAlignment="Center"
+							Visibility="{Binding Data, Converter={StaticResource NullToVisibilityConverter}}"
+							BorderBrush="{StaticResource BorderBrush}"
+							BorderThickness="1"
+							RelativePanel.Below="separator"
+							RelativePanel.AlignHorizontalCenterWithPanel="True">
+						<RelativePanel Margin="3">
+							<Grid x:Name="details"
+								  RelativePanel.AlignLeftWithPanel="True"
+								  RelativePanel.AlignRightWithPanel="True">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Grid Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<StackPanel x:Name="infos">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock>
+												<Run Text="Bewertung: "
+													 FontWeight="Bold" />
+											</TextBlock>
+											<ItemsControl ItemsSource="{Binding Rating, Mode=OneWay, Converter={StaticResource UserRatingToStarsConverter}}"
+														  x:Name="starRating"
+														  VerticalAlignment="Center"
+														  Margin="5 0 0 0">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate>
+														<TextBlock Text="&#xE00A;"
+																   FontFamily="Segoe MDL2 Assets"
+																   Opacity="{Binding }" />
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+												<ItemsControl.ItemsPanel>
+													<ItemsPanelTemplate>
+														<StackPanel Orientation="Horizontal">
+														</StackPanel>
+													</ItemsPanelTemplate>
+												</ItemsControl.ItemsPanel>
+											</ItemsControl>
+										</StackPanel>
+									</StackPanel>
+								</Grid>
+
+								<Grid Grid.Row="1"
+									  Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<TextBlock>
+										<Run Text="Autor: "
+											 FontWeight="Bold" />
+										<Run Text="{Binding Username}" />
+									</TextBlock>
+								</Grid>
+
+								<Grid Grid.Row="2"
+									  Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<TextBlock>
+										<Run Text="Status: "
+											 FontWeight="Bold" />
+										<Run Text="{Binding State, Converter={StaticResource StateStringConverter}}" />
+									</TextBlock>
+								</Grid>
+							</Grid>
+							<RelativePanel RelativePanel.Below="details"
+										   RelativePanel.AlignHorizontalCenterWithPanel="True">
+								<Button BorderBrush="Transparent"
+										Background="Transparent"
+										Padding="0"
+										RelativePanel.LeftOf="ratings"
+										RelativePanel.AlignTopWithPanel="True"
+										VerticalAlignment="Center"
+										VerticalContentAlignment="Center"
+										RelativePanel.AlignBottomWithPanel="True"
+										x:Name="user"
+										Command="{Binding OpenUser, Source={StaticResource EntryViewModel}}"
+										CommandParameter="{Binding UID}">
+									<Image Source="{Binding Avatar, Converter={StaticResource StringToAvatarConverter}, FallbackValue=ms-appx:///Assets/Proxer/Misc/nophoto.png}"
+										   Stretch="Uniform"
+										   x:Name="avatar"
+										   MaxHeight="200"
+										   MaxWidth="150" />
+								</Button>
+								<ItemsControl ItemsSource="{Binding Data, Converter={StaticResource CommentRatingDetailsConverter}}"
+											  x:Name="ratings"
+											  RelativePanel.AlignRightWithPanel="True">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="{Binding Key}"
+														   MinWidth="80"
+														   FontWeight="Bold"
+														   VerticalAlignment="Center"
+														   Margin="5" />
+												<TextBlock Text=":"
+														   VerticalAlignment="Center" />
+												<ItemsControl ItemsSource="{Binding Value}"
+															  Margin="5 0">
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<TextBlock Text="&#xE00A;"
+																	   FontFamily="Segoe MDL2 Assets"
+																	   VerticalAlignment="Center"
+																	   HorizontalAlignment="Center" />
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+													<ItemsControl.ItemsPanel>
+														<ItemsPanelTemplate>
+															<StackPanel Orientation="Horizontal">
+															</StackPanel>
+														</ItemsPanelTemplate>
+													</ItemsControl.ItemsPanel>
+												</ItemsControl>
+											</StackPanel>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel Orientation="Vertical">
+											</StackPanel>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+								</ItemsControl>
+							</RelativePanel>
+						</RelativePanel>
+					</Border>
+				</RelativePanel>
+			</controls:Expander>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="ProfileCommentItem">
+		<UserControl>
+			<controls:Expander Header="{Binding Name}"
+							   Margin="5"
+							   HeaderBorderBrush="Transparent">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="LayoutStates">
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="avatar.MaxHeight"
+										Value="150" />
+								<Setter Target="avatar.MaxWidth"
+										Value="112" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="avatar.MaxHeight"
+										Value="200" />
+								<Setter Target="avatar.MaxWidth"
+										Value="150" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<RelativePanel>
+					<RichTextBlock attached:RichTextBlockBbCode.BbCode="{Binding Content}"
+								   x:Name="content"
+								   Margin="4" />
+					<Rectangle Fill="{StaticResource BorderBrush}"
+							   Height="1"
+							   RelativePanel.Below="content"
+							   RelativePanel.AlignLeftWithPanel="True"
+							   RelativePanel.AlignRightWithPanel="True"
+							   x:Name="separator"
+							   Margin="4" />
+					<Border VerticalAlignment="Center"
+							Visibility="{Binding Data, Converter={StaticResource NullToVisibilityConverter}}"
+							BorderBrush="{StaticResource BorderBrush}"
+							BorderThickness="1"
+							RelativePanel.Below="separator"
+							RelativePanel.AlignHorizontalCenterWithPanel="True">
+						<RelativePanel Margin="3">
+							<Grid x:Name="details"
+								  RelativePanel.AlignLeftWithPanel="True"
+								  RelativePanel.AlignRightWithPanel="True">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Grid Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<StackPanel x:Name="infos">
+										<StackPanel Orientation="Horizontal">
+											<TextBlock>
+												<Run Text="Bewertung: "
+													 FontWeight="Bold" />
+											</TextBlock>
+											<ItemsControl ItemsSource="{Binding Rating, Mode=OneWay, Converter={StaticResource UserRatingToStarsConverter}}"
+														  x:Name="starRating"
+														  VerticalAlignment="Center"
+														  Margin="5 0 0 0">
+												<ItemsControl.ItemTemplate>
+													<DataTemplate>
+														<TextBlock Text="&#xE00A;"
+																   FontFamily="Segoe MDL2 Assets"
+																   Opacity="{Binding }" />
+													</DataTemplate>
+												</ItemsControl.ItemTemplate>
+												<ItemsControl.ItemsPanel>
+													<ItemsPanelTemplate>
+														<StackPanel Orientation="Horizontal">
+														</StackPanel>
+													</ItemsPanelTemplate>
+												</ItemsControl.ItemsPanel>
+											</ItemsControl>
+										</StackPanel>
+									</StackPanel>
+								</Grid>
+
+								<Grid Grid.Row="1"
+									  Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<TextBlock>
+										<Run Text="Name: "
+											 FontWeight="Bold" />
+										<Run Text="{Binding Name}" />
+									</TextBlock>
+								</Grid>
+
+								<Grid Grid.Row="3"
+									  Background="{StaticResource ContentBackground}"
+									  Margin="2">
+									<TextBlock>
+										<Run Text="Status: "
+											 FontWeight="Bold" />
+										<Run Text="{Binding State, Converter={StaticResource StateStringConverter}}" />
+									</TextBlock>
+								</Grid>
+							</Grid>
+							<RelativePanel RelativePanel.Below="details"
+										   RelativePanel.AlignHorizontalCenterWithPanel="True">
+								<Button BorderBrush="Transparent"
+										Background="Transparent"
+										Padding="0"
+										RelativePanel.LeftOf="ratings"
+										RelativePanel.AlignTopWithPanel="True"
+										VerticalAlignment="Center"
+										VerticalContentAlignment="Center"
+										RelativePanel.AlignBottomWithPanel="True"
+										x:Name="user"
+										Command="{Binding OpenEntryFromComment, Source={StaticResource ProfileViewModel}}"
+										CommandParameter="{Binding TID}">
+									<Image Source="{Binding TID, Converter={StaticResource IDToImageConverter}}"
+										   Stretch="Uniform"
+										   x:Name="avatar"
+										   MaxHeight="200"
+										   MaxWidth="150" />
+								</Button>
+								<ItemsControl ItemsSource="{Binding Data, Converter={StaticResource CommentRatingDetailsConverter}}"
+											  x:Name="ratings"
+											  RelativePanel.AlignRightWithPanel="True">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="{Binding Key}"
+														   MinWidth="80"
+														   FontWeight="Bold"
+														   VerticalAlignment="Center"
+														   Margin="5" />
+												<TextBlock Text=":"
+														   VerticalAlignment="Center" />
+												<ItemsControl ItemsSource="{Binding Value}"
+															  Margin="5 0">
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<TextBlock Text="&#xE00A;"
+																	   FontFamily="Segoe MDL2 Assets"
+																	   VerticalAlignment="Center"
+																	   HorizontalAlignment="Center" />
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+													<ItemsControl.ItemsPanel>
+														<ItemsPanelTemplate>
+															<StackPanel Orientation="Horizontal">
+															</StackPanel>
+														</ItemsPanelTemplate>
+													</ItemsControl.ItemsPanel>
+												</ItemsControl>
+											</StackPanel>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel Orientation="Vertical">
+											</StackPanel>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+								</ItemsControl>
+							</RelativePanel>
+						</RelativePanel>
+					</Border>
+				</RelativePanel>
+			</controls:Expander>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="TopTenItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="130" />
+								<Setter Target="cover.Height"
+										Value="186" />
+								<Setter Target="title.Width"
+										Value="75" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Narrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="650" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="180" />
+								<Setter Target="cover.Height"
+										Value="260" />
+								<Setter Target="title.Width"
+										Value="125" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1300" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="270" />
+								<Setter Target="cover.Height"
+										Value="385" />
+								<Setter Target="title.Width"
+										Value="215" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Image Width="270"
+					   Height="385"
+					   Source="{Binding EID, Converter={StaticResource IDToImageConverter}}"
+					   Stretch="Fill"
+					   x:Name="cover" />
+				<controls:Expander ExpandDirection="Up"
+								   VerticalAlignment="Bottom"
+								   HeaderBorderBrush="Transparent">
+					<controls:Expander.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".65" />
+					</controls:Expander.Background>
+					<controls:Expander.Header>
+						<TextBlock Text="{Binding Name}"
+								   Width="215"
+								   x:Name="title"
+								   Margin="3"
+								   TextWrapping="WrapWholeWords" />
+					</controls:Expander.Header>
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}" />
+				</controls:Expander>
+				<Button HorizontalAlignment="Right"
+						FontFamily="Segoe MDL2 Assets"
+						Content="&#xE10A;"
+						Margin="3"
+						VerticalAlignment="Top"
+						Command="{Binding DeleteTopTen, Source={StaticResource UserControlPanelViewModel}}"
+						CommandParameter="{Binding FID}">
+					<Button.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".65" />
+					</Button.Background>
+				</Button>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+	<DataTemplate x:Key="ProfileTopTenItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="130" />
+								<Setter Target="cover.Height"
+										Value="186" />
+								<Setter Target="title.Width"
+										Value="75" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Narrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="650" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="180" />
+								<Setter Target="cover.Height"
+										Value="260" />
+								<Setter Target="title.Width"
+										Value="125" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Default">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1300" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="270" />
+								<Setter Target="cover.Height"
+										Value="385" />
+								<Setter Target="title.Width"
+										Value="215" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Image Width="270"
+					   Height="385"
+					   Source="{Binding EID, Converter={StaticResource IDToImageConverter}}"
+					   Stretch="Fill"
+					   x:Name="cover" />
+				<controls:Expander ExpandDirection="Up"
+								   VerticalAlignment="Bottom"
+								   HeaderBorderBrush="Transparent">
+					<controls:Expander.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".65" />
+					</controls:Expander.Background>
+					<controls:Expander.Header>
+						<TextBlock Text="{Binding Name}"
+								   Width="215"
+								   x:Name="title"
+								   Margin="3"
+								   TextWrapping="WrapWholeWords" />
+					</controls:Expander.Header>
+					<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}" />
+				</controls:Expander>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="ConferenceItem">
+		<RelativePanel Height="50"
+					   HorizontalAlignment="Stretch"
+					   VerticalAlignment="Stretch">
+			<Ellipse Height="40"
+					 Width="40"
+					 x:Name="chatImage"
+					 RelativePanel.AlignVerticalCenterWithPanel="True"
+					 Margin="3">
+				<Ellipse.Fill>
+					<ImageBrush ImageSource="{Binding Image, Converter={StaticResource ChatImageToImageSourceConverter}}"
+								Stretch="UniformToFill" />
+				</Ellipse.Fill>
+			</Ellipse>
+			<TextBlock x:Name="chatName"
+					   RelativePanel.AlignTopWithPanel="True"
+					   RelativePanel.RightOf="chatImage"
+					   Margin="8 3 3 3"
+					   FontWeight="Bold"
+					   Text="{Binding Topic}" />
+			<StackPanel x:Name="lastMessage"
+						RelativePanel.Below="chatName"
+						RelativePanel.RightOf="chatImage"
+						RelativePanel.LeftOf="filler"
+						Margin="8 3 3 3"
+						Orientation="Horizontal">
+				<TextBlock Text="{Binding Username}"
+						   FontWeight="Thin"
+						   FontSize="12" />
+				<TextBlock Text=": "
+						   FontSize="12"
+						   FontWeight="Thin" />
+				<TextBlock TextTrimming="WordEllipsis"
+						   FontWeight="Thin"
+						   FontSize="12"
+						   Text="{Binding LatestMessage}" />
+			</StackPanel>
+			<TextBlock x:Name="dateTime"
+					   RelativePanel.AlignRightWithPanel="True"
+					   RelativePanel.AlignVerticalCenterWith="chatName"
+					   FontWeight="Thin"
+					   FontSize="12"
+					   Margin="2"
+					   Text="{Binding TimeStampEnd, Converter={StaticResource ChatTimeStampConverter}}" />
+			<TextBlock x:Name="count"
+					   MinWidth="20"
+					   RelativePanel.AlignRightWithPanel="True"
+					   RelativePanel.Below="chatName"
+					   FontWeight="Bold"
+					   Margin="2"
+					   TextAlignment="Right"
+					   Foreground="{StaticResource ActiveForeground}"
+					   Text="{Binding ReadCount}"
+					   Visibility="{Binding ReadCount, Converter={StaticResource IntToVisibilityConverter}}" />
+			<Rectangle x:Name="filler"
+					   Width="20"
+					   RelativePanel.AlignRightWithPanel="True"
+					   RelativePanel.Below="chatName"
+					   Margin="2"
+					   Height="20" />
+		</RelativePanel>
+	</DataTemplate>
+
+	<DataTemplate x:Key="SendMessageItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="250" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Narrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="320" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="275" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Small">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="500" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="400" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Normal">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="450" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Wide">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="900" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="550" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Border HorizontalAlignment="Right"
+						Margin="5"
+						x:Name="entry"
+						BorderBrush="{StaticResource ActiveBorderBrush}"
+						BorderThickness="1">
+					<Border.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource FocusedBackground}}"
+										 Opacity=".6" />
+					</Border.Background>
+					<StackPanel Margin="5">
+						<TextBlock Text="{Binding Text}"
+								   Margin="3 1"
+								   TextWrapping="WrapWholeWords" />
+						<TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampToTimeConverter}}"
+								   HorizontalAlignment="Right"
+								   Margin="3 1"
+								   FontWeight="Thin"
+								   FontSize="12" />
+					</StackPanel>
+				</Border>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="RecieveMessageItem">
+		<UserControl>
+			<Grid>
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup>
+						<VisualState x:Name="Mobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="250" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Narrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="320" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="275" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Small">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="500" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="400" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Normal">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="450" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="Wide">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="900" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="entry.Width"
+										Value="550" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Border HorizontalAlignment="Left"
+						BorderBrush="{StaticResource BorderBrush}"
+						Margin="5"
+						x:Name="entry"
+						BorderThickness="1">
+					<Border.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".95" />
+					</Border.Background>
+					<StackPanel Margin="5">
+						<TextBlock Text="{Binding Username}"
+								   HorizontalAlignment="Left"
+								   VerticalAlignment="Top"
+								   Margin="3 1"
+								   FontWeight="Thin"
+								   FontSize="12"
+								   Visibility="{Binding ShowName, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<Rectangle Fill="{StaticResource BorderBrush}"
+								   Height="1"
+								   Margin="3 1"
+								   HorizontalAlignment="Stretch"
+								   Visibility="{Binding ShowName, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<TextBlock Text="{Binding Text}"
+								   Margin="3 1"
+								   TextWrapping="WrapWholeWords" />
+						<TextBlock Text="{Binding TimeStamp, Converter={StaticResource TimeStampToTimeConverter}}"
+								   HorizontalAlignment="Right"
+								   Margin="3 1"
+								   FontWeight="Thin"
+								   FontSize="12" />
+					</StackPanel>
+				</Border>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+
+	<DataTemplate x:Key="InfoMessageItem">
+		<Border HorizontalAlignment="Stretch"
+				VerticalAlignment="Center"
+				BorderBrush="{StaticResource FocusedBorderBrush}"
+				Background="{StaticResource FocusedBackground}"
+				Margin="5"
+				x:Name="entry"
+				BorderThickness="1">
+			<TextBlock Text="{Binding Text}"
+					   Margin="3"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center" />
+		</Border>
+	</DataTemplate>
+
+	<DataTemplate x:Key="NotificationItem">
+		<UserControl Margin="2 10">
+			<Grid BorderBrush="{StaticResource BorderBrush}"
+				  BorderThickness="1">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="Notifications">
+						<VisualState x:Name="NotificationNarrowMobile">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="0" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="135" />
+								<Setter Target="cover.Height"
+										Value="172" />
+								<Setter Target="medium.(RelativePanel.AlignRightWithPanel)"
+										Value="False" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="medium.(RelativePanel.RightOf)"
+										Value="english" />
+								<Setter Target="english.(RelativePanel.RightOf)"
+										Value="german" />
+								<Setter Target="german.(RelativePanel.AlignLeftWithPanel)"
+										Value="true" />
+								<Setter Target="german.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="english.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="german.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="english.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="title.Width"
+										Value="95" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="NotificationNarrow">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="700" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="190" />
+								<Setter Target="cover.Height"
+										Value="243" />
+								<Setter Target="medium.(RelativePanel.AlignRightWithPanel)"
+										Value="False" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="medium.(RelativePanel.RightOf)"
+										Value="english" />
+								<Setter Target="english.(RelativePanel.RightOf)"
+										Value="german" />
+								<Setter Target="german.(RelativePanel.AlignLeftWithPanel)"
+										Value="true" />
+								<Setter Target="german.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="english.(RelativePanel.AlignVerticalCenterWith)"
+										Value="{x:Null}" />
+								<Setter Target="german.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="english.(RelativePanel.Below)"
+										Value="number" />
+								<Setter Target="german.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="english.(RelativePanel.LeftOf)"
+										Value="{x:Null}" />
+								<Setter Target="title.Width"
+										Value="140" />
+							</VisualState.Setters>
+						</VisualState>
+						<VisualState x:Name="NotificationsDefault">
+							<VisualState.StateTriggers>
+								<AdaptiveTrigger MinWindowWidth="1200" />
+							</VisualState.StateTriggers>
+							<VisualState.Setters>
+								<Setter Target="cover.Width"
+										Value="250" />
+								<Setter Target="cover.Height"
+										Value="320" />
+								<Setter Target="medium.(RelativePanel.AlignRightWithPanel)"
+										Value="True" />
+								<Setter Target="medium.(RelativePanel.Below)"
+										Value="{x:Null}" />
+								<Setter Target="medium.(RelativePanel.AlignLeftWithPanel)"
+										Value="False" />
+								<Setter Target="title.Width"
+										Value="200" />
+							</VisualState.Setters>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+				<Button Padding="0"
+						Command="{Binding OpenContent, Source={StaticResource NotificationsViewModel}}"
+						CommandParameter="{Binding Mode=OneWay}">
+					<Image Source="{Binding EID, Converter={StaticResource IDToImageConverter}}"
+						   Width="250"
+						   Height="320"
+						   Stretch="Fill"
+						   x:Name="cover" />
+				</Button>
+				<Button HorizontalAlignment="Right"
+						FontFamily="Segoe MDL2 Assets"
+						Content="&#xE10A;"
+						Margin="3"
+						VerticalAlignment="Top"
+						Command="{Binding DeleteNotification, Source={StaticResource NotificationsViewModel}}"
+						CommandParameter="{Binding Mode=OneWay}">
+					<Button.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".65" />
+					</Button.Background>
+				</Button>
+				<controls:Expander VerticalAlignment="Bottom"
+								   ExpandDirection="Up"
+								   BorderThickness="0"
+								   HeaderBorderThickness="0"
+								   ContentLineVisibility="Collapsed"
+								   IsExpanded="{Binding Model.GridItemsOpen, Source={StaticResource SettingsViewModel}}">
+					<controls:Expander.Background>
+						<SolidColorBrush Color="{Binding Color, Source={StaticResource Background}}"
+										 Opacity=".85" />
+					</controls:Expander.Background>
+					<controls:Expander.Header>
+						<TextBlock Text="{Binding Name}"
+								   TextWrapping="WrapWholeWords"
+								   x:Name="title"
+								   Width="200" />
+					</controls:Expander.Header>
+					<RelativePanel>
+						<StackPanel Orientation="Horizontal"
+									x:Name="number">
+							<TextBlock Text="Folge"
+									   VerticalAlignment="Center"
+									   TextAlignment="Center"
+									   Margin="2" />
+							<TextBlock Text="{Binding Number}"
+									   VerticalAlignment="Center"
+									   TextAlignment="Center"
+									   Margin="2" />
+							<TextBlock Text="online"
+									   VerticalAlignment="Center"
+									   TextAlignment="Center"
+									   Margin="2" />
+						</StackPanel>
+						<Image Height="16"
+							   Width="16"
+							   Source="ms-appx:///Assets/Proxer/Flags/german.gif"
+							   x:Name="german"
+							   Margin="2"
+							   Visibility="{Binding Language, Converter={StaticResource GermanLanguageConverter}}"
+							   RelativePanel.LeftOf="english"
+							   RelativePanel.AlignVerticalCenterWith="medium" />
+						<Image Height="16"
+							   Width="16"
+							   Source="ms-appx:///Assets/Proxer/Flags/english.gif"
+							   x:Name="english"
+							   Margin="2"
+							   Visibility="{Binding Language, Converter={StaticResource EnglishLanguageConverter}}"
+							   RelativePanel.LeftOf="medium"
+							   RelativePanel.AlignVerticalCenterWith="medium" />
+						<TextBlock Text="{Binding Medium, Converter={StaticResource MediumToStringConverter}}"
+								   Margin="2"
+								   x:Name="medium"
+								   RelativePanel.AlignRightWithPanel="True" />
+						<Rectangle Fill="{StaticResource ActiveBorderBrush}"
+								   Height="1"
+								   x:Name="separator"
+								   RelativePanel.AlignLeftWithPanel="True"
+								   RelativePanel.AlignRightWithPanel="True"
+								   RelativePanel.Below="medium" />
+					</RelativePanel>
+				</controls:Expander>
+			</Grid>
+		</UserControl>
+	</DataTemplate>
+</ResourceDictionary>

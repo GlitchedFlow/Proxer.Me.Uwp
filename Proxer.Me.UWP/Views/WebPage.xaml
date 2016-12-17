@@ -1,0 +1,25 @@
+﻿<Page x:Class="Proxer.Me.UWP.Views.WebPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Proxer.Me.UWP.Views"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:template="using:Template10.Controls"
+	  mc:Ignorable="d"
+	  DataContext="{StaticResource WebViewModel}">
+
+	<RelativePanel x:Name="rootPanel"
+				   Background="{StaticResource ContentBackground}">
+		<template:PageHeader Text="{Binding Model.Title}"
+							 RelativePanel.AlignLeftWithPanel="True"
+							 RelativePanel.AlignTopWithPanel="True"
+							 RelativePanel.AlignRightWithPanel="True"
+							 x:Name="header">
+		</template:PageHeader>
+		<WebView Source="{Binding Model.Source}"
+				 RelativePanel.Below="header"
+				 RelativePanel.AlignLeftWithPanel="True"
+				 RelativePanel.AlignRightWithPanel="True"
+				 RelativePanel.AlignBottomWithPanel="True" />
+	</RelativePanel>
+</Page>
